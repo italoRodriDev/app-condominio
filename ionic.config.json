@@ -1,0 +1,7 @@
+{
+  "name": "I3 Condominios",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
