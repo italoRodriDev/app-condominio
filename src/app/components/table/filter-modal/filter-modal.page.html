@@ -1,0 +1,80 @@
+<ion-header mode="md">
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button (click)="onDismiss()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content mode="md">
+  <br />
+  <div *ngIf="enableSelectOpts == true">
+    <ion-title>Tipo de pesquisa</ion-title>
+    <ion-item lines="none">
+      <ion-select
+        (ionChange)="onChangeSelectOpts($event)"
+        placeholder="Selecionar"
+        okText="Confirmar"
+        cancelText="Cancelar"
+        [value]="optsSelected"
+        interface="popover"
+      >
+        <ion-select-option *ngFor="let item of listOpts" [value]="item.value"
+          >{{ item?.title }}</ion-select-option
+        >
+      </ion-select>
+    </ion-item>
+  </div>
+  <div *ngIf="enableValueMoney == true">
+    <ion-item-divider></ion-item-divider>
+    <br />
+    <ion-title>Menor e maior valor R$</ion-title>
+    <ion-item lines="none">
+      <ion-label slot="start"
+        *ngIf="lowerUpperMoney?.lower != null && lowerUpperMoney?.upper != null"
+        >{{ lowerUpperMoney?.lower | currency: 'BRL' }} / {{
+        lowerUpperMoney?.upper | currency: 'BRL' }}</ion-label
+      >
+      <ion-label slot="start"
+        *ngIf="lowerUpperMoney?.lower == null && lowerUpperMoney?.upper == null"
+        >Qualquer valor</ion-label
+      >
+      <ion-range
+        (ionChange)="onChangeValueMoney($event)"
+        slot="end"
+        color="success"
+        aria-label="Valor"
+        [dualKnobs]="true"
+        [value]="lowerUpperMoney"
+      ></ion-range>
+    </ion-item>
+  </div>
+  <div *ngIf="enableStars == true">
+    <ion-item-divider></ion-item-divider>
+    <br />
+    <ion-title>Estrelas</ion-title>
+    <ion-item lines="none">
+      <ion-label slot="start" *ngIf="numberStars != null">{{ numberStars }} estrela(s)</ion-label>
+      <ion-label slot="start" *ngIf="numberStars == null">Todos</ion-label>
+      <ion-range
+        (ionChange)="onChangeStars($event)"
+        color="success"
+        slot="end"
+        aria-label="Estrelas"
+        [ticks]="true"
+        [snaps]="true"
+        [min]="1"
+        [max]="5"
+      ></ion-range>
+    </ion-item>
+  </div>  
+</ion-content>
+<ion-footer>
+  <ion-header>
+    <ion-toolbar>
+      <ion-button (click)="onDismiss()" class="btn-search" shape="round" expand="full">Buscar</ion-button>
+    </ion-toolbar>
+  </ion-header>
+</ion-footer>

@@ -1,0 +1,241 @@
+.items-center {
+  overflow: auto;
+}
+
+.box-search {
+  border: 1px solid #eaeaeb;
+  border-radius: 4px;
+}
+
+ion-searchbar {
+  height: 45px;
+  --box-shadow: none;
+  background-color: transparent;
+}
+
+.box-checkbox {
+  max-width: 50px;
+}
+
+.label-colum-thead {
+  font-weight: 400;
+  color: #a0a0a2;
+  text-align: left;
+}
+
+.label {
+  font-weight: 400;
+  color: #a0a0a2;
+  text-align: left;
+}
+
+.container-label-acoes {
+  margin-right: 38px;
+}
+
+ion-icon {
+  color: #a0a0a2;
+}
+
+.customTable {
+  width: 100%;
+  background-color: transparent;
+  border-collapse: collapse;
+  border-width: 1px;
+  border-color: transparent;
+  border-style: solid;
+  color: transparent;
+  border-radius: 4px;
+}
+
+table.customTable td,
+table.customTable th {
+  border-width: 1px;
+  border-color: transparent;
+  border-style: solid;
+  padding: 5px;
+}
+
+table.customTable thead {
+  background-color: transparent;
+}
+
+ion-list {
+  max-height: 330px;
+  overflow: auto;
+  padding: 0;
+  margin: 0;
+}
+
+ion-list::-webkit-scrollbar {
+  width: 8px;
+  height: 10px;
+}
+
+ion-list::-webkit-scrollbar-thumb {
+  background-color: var(--ion-color-medium);
+  border-radius: 5px;
+}
+
+ion-list::-webkit-scrollbar-track {
+  background-color: white;
+  border-radius: 0px;
+}
+
+.img-table {
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  border-radius: 100px;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+  position: absolute;
+}
+
+.data-col {
+  border-bottom: 1px solid #b1b1b1;
+}
+
+.container-acoes {
+  margin-right: 10px;
+}
+
+.box-color {
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  border-radius: 100%;
+  border: 1px solid #b1b1b1;
+}
+
+.box-color-default {
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  border-radius: 100%;
+  border: 1px solid #b1b1b1;
+}
+
+.box-grid-table {
+  background-color: #fdfdfd;
+  padding: 20px;
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.line-table {
+  border-bottom: 1px solid var(--ion-color-medium);
+}
+
+.line-table:hover {
+  background-color: whitesmoke;
+}
+
+.background-label {
+  min-width: 100%;
+  min-height: 100%;
+  padding: 3px;
+  border-radius: 5px;
+}
+
+// -> Tooltip de dicas
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  box-shadow: 0px 4px 8px rgba(58, 58, 58, 0.5);
+  visibility: hidden;
+  width: 120px;
+  background-color: var(--ion-color-primary);
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--ion-color-primary) transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+  font-size: 12px;
+}
+
+.panel-menu-control {
+  margin-left: 15px;
+}
+
+ion-item {
+  text-align: center;
+  right: 0;
+  left: 0;
+}
+
+.box-letra {
+  border-radius: 100%;
+  width: 35px;
+  height: 35px;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+  position: absolute;
+  p {
+    font-size: 17px;
+    font-weight: 600;
+    text-align: center;
+    color: white;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    margin-top: 8px;
+    position: absolute;
+  }
+}
+
+ion-row {
+  padding: none;
+  margin: none;
+}
+
+ion-col {
+  padding: none;
+  margin: none;
+}
+
+.container-info-filter {
+  span {
+    color: var(--ion-color-medium);
+  }
+  .title {
+    font-weight: bold;
+    color: var(--ion-color-medium);
+  }
+  ion-icon {
+    padding-top: 10px;
+  }
+}

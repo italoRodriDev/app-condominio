@@ -1,0 +1,107 @@
+<div
+  *ngIf="!isMobile"
+  class="sidenav"
+  [ngClass]="collapsed ? 'sidenav-collapsed' : ''"
+>
+  <div class="logo-container">
+    <img class="logo-pedidex" *ngIf="collapsed" src="/assets/images/logo.png" />
+    <ion-button
+      class="btn-close"
+      *ngIf="!collapsed"
+      fill="clear"
+      (click)="collapsed = !collapsed"
+    >
+      <ion-icon slot="icon-only" name="arrow-forward" color="dark"></ion-icon>
+    </ion-button>
+    <div class="logo-text" *ngIf="collapsed"></div>
+    <ion-button
+      class="btn-close"
+      *ngIf="collapsed"
+      fill="clear"
+      (click)="collapsed = !collapsed"
+    >
+      <ion-icon slot="icon-only" name="close" color="dark"></ion-icon>
+    </ion-button>
+  </div>
+  <div class="list">
+    <ul class="sidenav-nav">
+      <br/>
+      <br/>
+      <li
+        *ngFor="let item of listMenuItems"
+        class="sidenav-nav-item"
+        [ngClass]="{ 'sidenav-nav-item-current': currentRoute == item?.router }"
+        (click)="onClickItemMenu(item.router)"
+      >
+        <a class="sidenav-nav-link">
+          <ion-avatar class="sidenav-link-icon">
+            <ion-icon class="ion-icon-item" [icon]="item.icon"></ion-icon>
+          </ion-avatar>
+          <span class="sidenav-link-text" *ngIf="collapsed">{{
+            item.title
+          }}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div
+  *ngIf="isMobile && showMenu"
+  class="sidenav"
+  [ngClass]="collapsed ? 'sidenav-collapsed' : ''"
+>
+  <div>
+    <div class="logo-container">
+      <img
+        class="logo-pedidex"
+        *ngIf="collapsed"
+        src="/assets/images/logo.png"
+      />
+      <ion-button
+        class="btn-close"
+        *ngIf="!collapsed"
+        fill="clear"
+        (click)="collapsed = !collapsed"
+      >
+        <ion-icon slot="icon-only" name="arrow-forward" color="dark"></ion-icon>
+      </ion-button>
+      <div class="logo-text" *ngIf="collapsed"></div>
+      <ion-button
+        class="btn-close"
+        *ngIf="collapsed"
+        fill="clear"
+        (click)="collapsed = !collapsed"
+      >
+        <ion-icon slot="icon-only" name="close" color="dark"></ion-icon>
+      </ion-button>
+    </div>
+    <div class="list">
+      <ul class="sidenav-nav">
+        <li
+          class="sidenav-nav-item"
+          [ngClass]="{
+            'sidenav-nav-item-current': currentRoute == item?.router
+          }"
+          (click)="onClickItemMenu(item.router)"
+          *ngFor="let item of listMenuItems"
+        >
+          <a class="sidenav-nav-link">
+            <ion-avatar class="sidenav-link-icon">
+              <ion-icon class="ion-icon-item" [icon]="item.icon"></ion-icon>
+            </ion-avatar>
+            <span class="sidenav-link-text" *ngIf="collapsed">{{
+              item.title
+            }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="container-button-mobile">
+  <ion-fab *ngIf="isMobile" slot="fixed" vertical="bottom" horizontal="start">
+    <ion-fab-button (click)="onClickShowMenu()">
+      <ion-icon [name]="showMenu ? 'close' : 'menu-outline'"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</div>

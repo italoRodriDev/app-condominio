@@ -1,0 +1,54 @@
+<div class="container-grid" *ngIf="modeSelect == 'GRID'">
+  <ion-label>{{ title }}</ion-label>
+  <br />
+  <ion-button (click)="onClickGetPhotoAndResizeFile()" shape="round" color="primary" size="small">
+    <label>
+      Adicionar fotos
+    </label>
+  </ion-button>
+  <div class="box-grid-images">
+    <ion-grid>
+      <ion-col *ngFor="let file of listFiles">
+        <ion-label>
+          <img [class.img]="modoPaisagem == false" [class.img-paisagem]="modoPaisagem == true" [lazyLoad]="file.preview" />
+          <button class="remove" (click)="onClickRemoveFile(file)">
+            <ion-icon
+              slot="icon-only"
+              size="small"
+              name="close-outline"
+            ></ion-icon>
+          </button>
+        </ion-label>
+      </ion-col>
+      <ion-col *ngFor="let img of urlImagesUpload">
+        <ion-label>
+          <img [class.img]="modoPaisagem == false" [class.img-paisagem]="modoPaisagem == true" [lazyLoad]="img?.url" />
+          <button class="remove" (click)="onClickRemoveImg(img)">
+            <ion-icon
+              slot="icon-only"
+              size="small"
+              name="close-circle-outline"
+            ></ion-icon>
+          </button>
+        </ion-label>
+      </ion-col>
+    </ion-grid>
+    <br/>
+    <ion-label *ngIf="!urlImagesUpload.length">Nenhuma foto adicionada</ion-label>
+    <br/>
+    <br/>
+  </div>
+</div>
+<div class="container-default" *ngIf="modeSelect == 'SIMPLE'">
+  <ion-item lines="none" class="ion-no-padding">
+    <ion-avatar>
+      <img class="img" [lazyLoad]="urlImagesUpload[0]" #imgPreview defaultImage="assets/images/img_default.webp"/>
+    </ion-avatar>
+    <ion-label>{{ labelSelectSimpleImage }}</ion-label>
+    <ion-button (click)="onClickGetPhotoAndResizeFile()" slot="end" shape="round" color="primary">
+      <label>
+        Selecionar
+      </label>
+    </ion-button>
+  </ion-item>
+</div>

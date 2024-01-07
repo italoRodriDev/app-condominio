@@ -1,0 +1,37 @@
+<div *ngIf="time == false"  class="container-label">
+  <ion-label>
+    <p>
+      <img class="animation" lazyLoad="assets/images/animation_list.gif">
+    </p>
+    <p class="label">
+      {{ label }}
+    </p>
+  </ion-label>
+</div>
+<div *ngIf="time == true">
+  <ion-item  *ngFor="let item of list">
+    <ion-thumbnail slot="start">
+      <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+    </ion-thumbnail>
+    <ion-label>
+      <h3>
+        <ion-skeleton-text
+          [animated]="true"
+          style="width: 80%"
+        ></ion-skeleton-text>
+      </h3>
+      <p>
+        <ion-skeleton-text
+          [animated]="true"
+          style="width: 60%"
+        ></ion-skeleton-text>
+      </p>
+      <p>
+        <ion-skeleton-text
+          [animated]="true"
+          style="width: 30%"
+        ></ion-skeleton-text>
+      </p>
+    </ion-label>
+  </ion-item>  
+</div>

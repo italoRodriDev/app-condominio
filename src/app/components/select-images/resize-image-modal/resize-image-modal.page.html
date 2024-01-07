@@ -1,0 +1,110 @@
+<ion-header mode="md">
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button (click)="onDismiss()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+      <ion-title>Editor de Fotos</ion-title>
+      <ion-button (click)="onClickSave()"> Salvar </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content mode="md">
+  <section class="container">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-select
+              (ionChange)="onChangeSizeAspectRatio($event)"
+              value="false"
+              label="Tipo de Seleção"
+              placeholder="Selecionar"
+              okText="Salvar"
+              interface="popover"
+              cancelText="Voltar"
+            >
+              <ion-select-option value="false">Livre</ion-select-option>
+              <ion-select-option value="true">Fixo</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-select
+              (ionChange)="onChangeTypeAspect($event)"
+              [value]="4/3"
+              label="Tamanho"
+              placeholder="Selecionar"
+              interface="popover"
+              okText="Salvar"
+              cancelText="Voltar"
+            >
+              <ion-select-option [value]="4/3"
+                >4:3 (Quadrada)</ion-select-option
+              >
+              <ion-select-option [value]="16/9"
+                >16:9 (Paisagem)</ion-select-option
+              >
+              <ion-select-option [value]="9/16"
+                >16:9 (Retangular)</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div class="box-img-edit" [hidden]="imageChangedEvent == null">
+            <ion-title>Imagem original</ion-title>
+            <image-cropper
+              [imageChangedEvent]="imageChangedEvent"
+              [maintainAspectRatio]="sizeAspectRatio"
+              [aspectRatio]="typeAspectRatio"
+              format="jpeg"
+              (imageCropped)="imageCropped($event)"
+              (imageLoaded)="imageLoaded($event)"
+              (cropperReady)="cropperReady()"
+              (loadImageFailed)="loadImageFailed()"
+            ></image-cropper>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div *ngIf="!isMobile && croppedImage != null">
+            <ion-title>Pré-visualização</ion-title>
+            <img [ngStyle]="imageStyles" [src]="croppedImage" />
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div *ngIf="isMobile && croppedImage != null">
+      <ion-item-divider>
+        <ion-title>Pré-visualização</ion-title>
+      </ion-item-divider>
+      <img [ngStyle]="imageStyles" [src]="croppedImage" />
+    </div>
+  </section>
+  <section class="default" *ngIf="imageChangedEvent == null">
+    <ion-label>Nenhuma imagem selecionada...</ion-label>
+  </section>
+</ion-content>
+<ion-footer mode="md">
+  <ion-header>
+    <ion-toolbar>
+      <ion-button slot="end" shape="round" color="primary" size="small">
+        <label id="label-input" style="color: white">
+          Selecionar foto
+          <input
+            hidden
+            (change)="fileChangeEvent($event)"
+            type="file"
+            accept=".jpg, .jpeg, .png"
+          />
+        </label>
+      </ion-button>
+    </ion-toolbar>
+  </ion-header>
+</ion-footer>

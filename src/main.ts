@@ -1,40 +1,45 @@
 import { enableProdMode, importProvidersFrom } from '@angular/core';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireDatabase, AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { AngularFireStorage, AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter } from '@angular/router';
-import {
-  IonicRouteStrategy,
-  provideIonicAngular,
-} from '@ionic/angular/standalone';
-
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IConfig, provideEnvironmentNgxMask } from 'ngx-mask';
+import { environment } from './environments/environment.prod';
 import { AppComponent } from './app/app.component';
+import { CommonModule } from '@angular/common';
 import { routes } from './app/app.routes';
-import { environment } from './environments/environment';
-
-import { HttpClientModule } from '@angular/common/http';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { provideIonicAngular } from '@ionic/angular/standalone';
 
 if (environment.production) {
   enableProdMode();
 }
 
+const maskConfig: Partial<IConfig> = {
+  validation: false,
+};
+
 bootstrapApplication(AppComponent, {
   providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    AngularFireAuth,
+    AngularFireStorage,
+    AngularFireDatabase,
+    provideEnvironmentNgxMask(maskConfig),
+    {
+      provide: RouteReuseStrategy,
+      useClass: IonicRouteStrategy,
+    
+    },
     provideIonicAngular(),
-    importProvidersFrom( 
+    importProvidersFrom(
+      CommonModule,
+      IonicModule.forRoot({}),  
       AngularFireModule.initializeApp(environment.firebaseConfig),
-      IonicModule.forRoot({}),
       AngularFireDatabaseModule,
+      AngularFireStorageModule,
       AngularFireAuthModule,
-      AngularFirestoreModule,
-      provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-      HttpClientModule
     ),
     provideRouter(routes),
   ],

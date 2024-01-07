@@ -1,0 +1,380 @@
+<div class="box-grid-table" *ngIf="modePreview == false">
+  <!--FILTRO E PESQUISA-->
+  <ion-grid *ngIf="showToolbar">
+    <ion-row>
+      <ion-col size="8">
+        <div class="box-search">
+          <ion-searchbar
+            (ionChange)="onChangeFilterTable($event)"
+            placeholder="Buscar"
+          ></ion-searchbar>
+        </div>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button
+          *ngIf="showBtnConfigFilter"
+          shape="outline"
+          color="medium"
+          fill="clear"
+          (click)="onClickShowModalFilter()"
+        >
+          <ion-icon slot="icon-only" name="options-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!--COLUNAS DA TABELA-->
+  <div class="container-info-filter">
+    <ion-label *ngIf="filters != null">Filtrando por: 
+      <span *ngIf="typeFilterLabel != ''"><span class="title">Tipo: </span>{{ typeFilterLabel }}</span>
+      <span *ngIf="numberStars != null">, <span class="title">Estrelas: </span>{{ numberStars }}</span>
+      <span *ngIf="lowerUpperMoney?.lower != null">, <span class="title">Menor valor: </span>{{ lowerUpperMoney?.lower | currency: 'BRL' }}</span>
+      <span *ngIf="lowerUpperMoney?.upper != null">, <span class="title">Maior valor: </span>{{ lowerUpperMoney?.upper | currency: 'BRL' }}</span>
+    </ion-label>
+  </div>
+  <table class="customTable">
+    <thead>
+      <ion-list>
+        <div class="line-table">
+          <ion-item lines="none" color="transparent">
+            <ion-checkbox
+              *ngIf="showCheckBox"
+              slot="start"
+              color="primary"
+              (ionChange)="onChangeSelect($event, null)"
+              checked="false"
+            ></ion-checkbox>
+            <tr>
+              <td *ngFor="let colum of columns">
+                <ion-item text-center color="transparent" lines="none">
+                  <div [ngSwitch]="colum?.type">
+                    <!--Letra Inicial-->
+                    <div
+                      *ngSwitchCase="'Letra'"
+                      style="min-width: 30px; max-width: 30px"
+                    >
+                      <ion-label class="label-colum-thead"></ion-label>
+                    </div>
+                    <div
+                      *ngSwitchCase="'Foto'"
+                      style="min-width: 50px; max-width: 50px"
+                    >
+                      <ion-label class="label-colum-thead">{{
+                        colum?.title?.length > 20
+                          ? (colum?.title | slice : 0 : 20) + "..."
+                          : colum?.title
+                      }}</ion-label>
+                    </div>
+                    <!--Cor-->
+                    <div
+                      *ngSwitchCase="'Color'"
+                      style="min-width: 50px; max-width: 50px"
+                    >
+                      <ion-label class="label-colum-thead">{{
+                        colum?.title?.length > 20
+                          ? (colum?.title | slice : 0 : 20) + "..."
+                          : colum?.title
+                      }}</ion-label>
+                    </div>
+                    <!--Apenas data-->
+                    <div
+                      *ngSwitchCase="'date'"
+                      style="min-width: 50px; max-width: 50px"
+                    >
+                      <ion-label class="label-colum-thead">{{
+                        colum?.title?.length > 20
+                          ? (colum?.title | slice : 0 : 20) + "..."
+                          : colum?.title
+                      }}</ion-label>
+                    </div>
+                    <!--Data e hora-->
+                    <div
+                      *ngSwitchCase="'date-time'"
+                      style="min-width: 50px; max-width: 50px"
+                    >
+                      <ion-label class="label-colum-thead">{{
+                        colum?.title?.length > 20
+                          ? (colum?.title | slice : 0 : 20) + "..."
+                          : colum?.title
+                      }}</ion-label>
+                    </div>
+                    <!--Dinheiro-->
+                    <div
+                      *ngSwitchCase="'R$'"
+                      style="min-width: 80px; max-width: 80px"
+                    >
+                      <ion-label class="label-colum-thead">{{
+                        colum?.title?.length > 20
+                          ? (colum?.title | slice : 0 : 20) + "..."
+                          : colum?.title
+                      }}</ion-label>
+                    </div>
+                    <!--Booleano true ou false-->
+                    <div
+                      *ngSwitchCase="'bool'"
+                      style="min-width: 80px; max-width: 80px"
+                    >
+                      <ion-label class="label-colum-thead">{{
+                        colum?.title?.length > 20
+                          ? (colum?.title | slice : 0 : 20) + "..."
+                          : colum?.title
+                      }}</ion-label>
+                    </div>
+                    <!--Toggle ação-->
+                    <div
+                      *ngSwitchCase="'toggle'"
+                      style="min-width: 80px; max-width: 80px"
+                    >
+                      <ion-label class="label-colum-thead">{{
+                        colum?.title?.length > 20
+                          ? (colum?.title | slice : 0 : 20) + "..."
+                          : colum?.title
+                      }}</ion-label>
+                    </div>
+                    <!--Só texto-->
+                    <div
+                      *ngSwitchDefault
+                      style="min-width: 150px; max-width: 150px"
+                    >
+                      <ion-label class="label-colum-thead">{{
+                        colum?.title?.length > 20
+                          ? (colum?.title | slice : 0 : 20) + "..."
+                          : colum?.title
+                      }}</ion-label>
+                    </div>
+                  </div>
+                </ion-item>
+              </td>
+            </tr>
+            <ion-label slot="end" class="label">Ações</ion-label>
+          </ion-item>
+        </div>
+      </ion-list>
+    </thead>
+  </table>
+  <!--LINHAS DA TABELA-->
+  <table class="customTable">
+    <tbody>
+      <ion-list>
+        <div
+          class="line-table"
+          *ngFor="let line of listItems; let index = index"
+        >
+          <ion-item lines="none" color="transparent">
+            <ion-checkbox
+              slot="start"
+              *ngIf="showCheckBox"
+              color="primary"
+              (ionChange)="onChangeSelect($event, line)"
+              [checked]="line.checked != null ? line.checked : false"
+            ></ion-checkbox>
+            <tr>
+              <td
+                (click)="onClickItemTable(line)"
+                *ngFor="let columRow of columns"
+                text-center
+              >
+                <!-- <div class="tooltip"> -->
+                <ion-item text-center color="transparent" lines="none">
+                  <div [ngSwitch]="columRow?.type">
+                    <!--Letra-->
+                    <div
+                      *ngSwitchCase="'Letra'"
+                      style="min-width: 30px; max-width: 30px"
+                    >
+                      <div
+                        class="box-letra"
+                        [ngStyle]="{ 'background-color': line.colorBackground }"
+                      >
+                        <p>{{ line[columRow.value].charAt(0) }}</p>
+                      </div>
+                    </div>
+                    <!--Foto-->
+                    <div
+                      *ngSwitchCase="'Foto'"
+                      style="min-width: 50px; max-width: 50px"
+                    >
+                      <img
+                        class="img-table"
+                        defaultImage="assets/images/img_default.webp"
+                        [lazyLoad]="line[columRow.value]"
+                      />
+                    </div>
+                    <!--Cor-->
+                    <div
+                      *ngSwitchCase="'Color'"
+                      style="min-width: 50px; max-width: 50px"
+                    >
+                      <div
+                        *ngIf="line[columRow.value] != 'NULL'"
+                        class="box-color"
+                        [ngStyle]="{ 'background-color': line[columRow.value] }"
+                      ></div>
+                      <div
+                        *ngIf="line[columRow.value] == 'NULL'"
+                        class="box-color-default"
+                      ></div>
+                    </div>
+                    <!--Apenas data-->
+                    <div
+                      *ngSwitchCase="'date'"
+                      style="min-width: 50px; max-width: 50px"
+                    >
+                      <ion-label class="label">{{
+                        line[columRow.value] != null
+                          ? (line[columRow.value] | date : "dd/MM/yy")
+                          : "00/00/00"
+                      }}</ion-label>
+                    </div>
+                    <!--Data e hora-->
+                    <div
+                      *ngSwitchCase="'date-time'"
+                      style="min-width: 50px; max-width: 50px"
+                    >
+                      <ion-label class="label">{{
+                        line[columRow.value] != null
+                          ? (line[columRow.value] | date : "dd/MM/yy HH:mm")
+                          : "00/00/00 00:00"
+                      }}</ion-label>
+                    </div>
+                    <!--Dinheiro-->
+                    <div
+                      *ngSwitchCase="'R$'"
+                      style="min-width: 80px; max-width: 80px"
+                    >
+                      <ion-label class="label">{{
+                        line[columRow.value] != null
+                          ? (line[columRow.value] | currency : "BRL")
+                          : "R$00.00"
+                      }}</ion-label>
+                    </div>
+                    <!--Booleano true ou false-->
+                    <div
+                      *ngSwitchCase="'bool'"
+                      style="min-width: 80px; max-width: 80px"
+                    >
+                      <div [ngSwitch]="line[columRow.value]">
+                        <ion-label class="label" *ngSwitchCase="true"
+                          >Sim</ion-label
+                        >
+                        <ion-label class="label" *ngSwitchCase="false"
+                          >Não</ion-label
+                        >
+                        <ion-label class="label" *ngSwitchDefault
+                          >Não</ion-label
+                        >
+                      </div>
+                    </div>
+                    <!--Toggle ação-->
+                    <div
+                      *ngSwitchCase="'toggle'"
+                      style="min-width: 80px; max-width: 80px"
+                    >
+                      <ion-toggle
+                        (ionChange)="
+                          onChangeToggle($event, line, line[columRow.value])
+                        "
+                        [checked]="line[columRow.value]"
+                        mode="ios"
+                        color="success"
+                      ></ion-toggle>
+                    </div>
+                    <!--Só texto-->
+                    <div
+                      *ngSwitchDefault
+                      style="min-width: 150px; max-width: 150px"
+                    >
+                      <ion-label class="label">{{
+                        line[columRow.value] != null
+                          ? line[columRow.value].length > 35
+                            ? (line[columRow.value] | slice : 0 : 35) + "..."
+                            : line[columRow.value]
+                          : "Sem dados"
+                      }}</ion-label>
+                    </div>
+                  </div>
+                </ion-item>
+                <!-- <span class="tooltiptext">{{ columRow?.title }}</span> -->
+                <!--</div>-->
+              </td>
+            </tr>
+            <ion-button
+              slot="end"
+              (click)="onClickShowMenu(index)"
+              fill="clear"
+              size="small"
+            >
+              <ion-icon
+                slot="icon-only"
+                name="ellipsis-vertical-outline"
+              ></ion-icon>
+            </ion-button>
+          </ion-item>
+          <!--PAINEL CONTROLE LINHA ITEM-->
+          <section
+            class="panel-menu-control"
+            *ngIf="currentIndex == index && showOptsMenu"
+          >
+            <ion-button
+              *ngIf="showBtnInfo"
+              (click)="onClickInfo(line)"
+              fill="clear"
+              size="small"
+            >
+              <ion-icon
+                slot="start"
+                [color]="colorIconInfo"
+                [name]="iconInfo"
+              ></ion-icon>
+              <ion-label [color]="colorIconRemove">{{
+                titleIconInfo
+              }}</ion-label>
+            </ion-button>
+            <ion-button
+              *ngIf="showBtnEdit"
+              (click)="onClickEdit(line)"
+              color="secondary"
+              fill="clear"
+              size="small"
+            >
+              <ion-icon
+                slot="start"
+                [color]="colorIconEdit"
+                [name]="iconEdit"
+              ></ion-icon>
+              <ion-label [color]="colorIconRemove">{{
+                titleIconEdit
+              }}</ion-label>
+            </ion-button>
+            <ion-button
+              *ngIf="showBtnDelete"
+              (click)="onClickRemove(line)"
+              fill="clear"
+              color="secondary"
+              size="small"
+            >
+              <ion-icon
+                slot="start"
+                [color]="colorIconRemove"
+                [name]="iconRemove"
+              ></ion-icon>
+              <ion-label [color]="colorIconRemove">{{
+                titleIconRemove
+              }}</ion-label>
+            </ion-button>
+          </section>
+        </div>
+        <ion-infinite-scroll (ionInfinite)="loadData($event)">
+          <ion-infinite-scroll-content> </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-list>
+    </tbody>
+  </table>
+  <app-skeleton-list *ngIf="!listItems.length"></app-skeleton-list>
+</div>
+<!--PAGINACAO-->
+<ion-row *ngIf="showPagination">
+  <ion-col size="4">
+    <ion-label>Total: {{ currentPage }} itens encontrados.</ion-label>
+  </ion-col>
+</ion-row>
