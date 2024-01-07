@@ -34,7 +34,6 @@ export class AgendamentoAreaGourmetService {
   ) {}
 
   getListItems() {
-    console.log(this.condominio?.idUser);
     if (this.condominio?.idUser != null) {
       this.fireStore
         .collection(this.refCollection)
@@ -168,81 +167,6 @@ export class AgendamentoAreaGourmetService {
           this.alertService.showToast('Erro: ' + error.code);
         });
     }
-  }
-
-  uploadFileImages(currentImages: Array<any>, pathSaveImages: string) {
-    return new Promise<Array<any>>((resolve) => {
-      var urlsUploadComplete: Array<any> = [];
-      if (currentImages != null) {
-        urlsUploadComplete = currentImages;
-      }
-
-      if (this.listFilesUpload.length > 0) {
-        this.listFilesUpload.forEach((data, index) => {
-          var currentFile: number = index + 1;
-          var numberFiles: number = this.listFilesUpload.length;
-
-          if (data.file != null) {
-            this.alertService
-              .showLoadingUploadImage(
-                `Aguarde! Estamos enviando as imagens: ${currentFile}/${numberFiles}`
-              )
-              .then((loading) => {
-                loading.present();
-
-                var idImg = this.fireStore.createId().toString();
-                var ref = this.fireStorage.ref(
-                  `${pathSaveImages}/${idImg + '.jpg'}`
-                );
-                var task = ref.put(data?.file);
-
-                task.percentageChanges().subscribe((progress) => {});
-                task
-                  .snapshotChanges()
-                  .pipe(
-                    finalize(() => {
-                      ref.getDownloadURL().subscribe((url) => {
-                        // -> Salvando url de imagem na lista
-                        urlsUploadComplete.push({ id: idImg, url: url });
-                        this.alertService.showToast(
-                          `Upload da imagem ${currentFile} finalizada com sucesso!`
-                        );
-                        if (currentFile == numberFiles) {
-                          this.listFilesUpload = [];
-                          urlsUploadComplete.sort((a, b) => b - a);
-                          resolve(urlsUploadComplete);
-                        }
-                      });
-                    })
-                  )
-                  .subscribe();
-              });
-          }
-        });
-      } else {
-        resolve(urlsUploadComplete);
-      }
-    });
-  }
-
-  removeImage(item: any, dataImage: any) {
-    const idDoc = item?.id;
-    const idImage = dataImage?.image?.id;
-    const newListImages = dataImage?.newListImages;
-
-    this.fireStore
-      .collection(this.refCollection)
-      .doc(idDoc)
-      .update({ urlImagesUpload: newListImages })
-      .then(() => {
-        this.fireStorage
-          .ref('Imagens')
-          .child(this.refCollection)
-          .child(idDoc)
-          .child(idImage + '.jpg')
-          .delete();
-        this.alertService.showToast('Imagem excluida com sucesso!');
-      });
   }
 
   nextPage() {

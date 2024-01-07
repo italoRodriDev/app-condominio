@@ -127,6 +127,16 @@ export class FormService {
     id: []
   });
 
+  formApartamento: FormGroup = this.fb.group({
+    id: [],
+    condominio: [],
+    nome: this.nameValidator,
+    numeroBloco: this.reqValidator,
+    email: this.emailValidator,
+    telefone: this.phoneValidator,
+    status: this.reqValidator,
+  });
+
   constructor(private fb: FormBuilder) {
     this.resetDataForm();
   }
@@ -138,5 +148,10 @@ export class FormService {
     this.formProfile.reset();
     this.formSignUpFinish.reset();
     this.formAgendamento.reset();
+    this.formApartamento.reset();
+
+    this.formApartamento.patchValue({
+      status: true
+    });
   }
 }

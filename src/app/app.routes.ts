@@ -52,4 +52,12 @@ export const routes: Routes = [
     path: 'agendamento-concluido',
     loadComponent: () => import('./pages/user/agendamento-concluido/agendamento-concluido.page').then( m => m.AgendamentoConcluidoPage)
   },
+  {
+    path: 'apartamentos',
+    loadComponent: () => import('./pages/admin/apartamentos/apartamentos.page').then( m => m.ApartamentosPage)
+  },
+  {
+    path: 'edit-apartamento',
+    loadComponent: () => import('./pages/admin/apartamentos/edit-apartamento/edit-apartamento.page').then( m => m.EditApartamentoPage)
+  },
 ];

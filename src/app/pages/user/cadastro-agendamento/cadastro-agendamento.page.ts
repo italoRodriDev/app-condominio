@@ -67,7 +67,6 @@ export class CadastroAgendamentoPage implements OnInit {
   };
 
   onClickSave() {
-    console.log(this.form.value);
     if (this.form.valid) {
       this.service.validateFormPreSave();
     } else {

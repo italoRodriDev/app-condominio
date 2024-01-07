@@ -66,7 +66,7 @@ export class HomePage implements OnInit {
   onClickDateCalendar(ev: any) {
     const value = ev.detail.value;
     const item = this.listAgendamentos.find(
-      (el) => el.data == moment(value).format('YYYY-MM-DD')
+      (el) => moment(el.data).format('YYYY-MM-DD') == moment(value).format('YYYY-MM-DD')
     );
     if (item != null) {
       this.onClickItemCardCalendar(item);

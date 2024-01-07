@@ -10,6 +10,7 @@ import { CondominioModel } from 'src/app/models/condomio.model';
 import { AlertsService } from '../alerts/alerts.service';
 import { FormService } from '../forms/form.service';
 import { AgendamentoAreaGourmetService } from '../user/agendamento-area-gourmet.service';
+import { ApartamentosService } from '../admin/apartamentos.service';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +35,8 @@ export class AuthService {
     private fireStore: AngularFirestore,
     private navCtrl: NavController,
     private alertService: AlertsService,
-    private agendamentoAreaGourmetService: AgendamentoAreaGourmetService
+    private agendamentoAreaGourmetService: AgendamentoAreaGourmetService,
+    private apartamentosService: ApartamentosService
   ) {
     this.getCurrentUser();
   }
@@ -75,6 +77,7 @@ export class AuthService {
   // -> Compatilhando dados do usuario para outros servicos
   sharedCurrentData(data: CondominioModel) {
     this.agendamentoAreaGourmetService.condominio = data;
+    this.apartamentosService.condominio = data;
     this.validateRouteInitApp(data.typeRegister);
   }
 
