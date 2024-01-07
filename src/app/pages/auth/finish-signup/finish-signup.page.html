@@ -1,0 +1,77 @@
+<ion-content mode="md">
+  <!--Finalizar cadastro-->
+  <section class="center-content">
+    <ion-card class="card-form">
+      <ion-card-content>
+        <div class="intro-form">
+          <img class="logo" lazyLoad="assets/images/logo.png" />
+          <p class="title">Crie sua conta</p>
+          <p>Preencha com os dados</p>
+        </div>
+        <div class="box-form">
+          <form [formGroup]="formSignUpFinish">
+            <ion-item lines="none" color="light">
+              <ion-label position="stacked">Nome do condomínio</ion-label>
+              <ion-input
+                formControlName="name"
+                placeholder="Digite o nome do condomínio..."
+                type="name"
+                minlength="8"
+                maxlength="100"
+              ></ion-input>
+            </ion-item>
+            <ion-item class="input-mask" lines="none" color="light">
+              <p>Telefone</p>
+              <input
+                formControlName="phone"
+                label="Telefone"
+                type="text"
+                mask="(00) 00000-0000"
+                labelPlacement="stacked"
+                placeholder="(00) 000000-0000"
+                autocorrect="on"
+                spellcheck="true"
+              />
+            </ion-item>
+            <ion-item class="input-mask" lines="none" color="light">
+              <p>CNPJ</p>
+              <input
+                formControlName="cnpj"
+                label="CNPJ"
+                type="text"
+                mask="00.000.000/0000-00"
+                labelPlacement="stacked"
+                placeholder="00.000.000/0000-00"
+                autocorrect="on"
+                spellcheck="true"
+              />
+            </ion-item>
+          </form>
+        </div>
+
+        <ion-item lines="none" color="transparent">
+          <ion-checkbox (ionChange)="onChangeCheckTerms($event)"></ion-checkbox>
+          <ion-button shape="round" fill="clear" color="dark">
+            <ion-label>Li e aceito os <a href="#">Termos de uso.</a></ion-label>
+          </ion-button>
+        </ion-item>
+      </ion-card-content>
+      <ion-card-content>
+        <ion-button
+          [disabled]="!formSignUpFinish.valid || isLoading"
+          (click)="onClickContinue()"
+          class="btn"
+        >
+          <ion-spinner
+            *ngIf="isLoading"
+            name="dots"
+          ></ion-spinner>
+          <ion-label *ngIf="!isLoading">
+            <ion-label color="light">Criar conta</ion-label>
+          </ion-label>
+        </ion-button>
+        <br />
+      </ion-card-content>
+    </ion-card>
+  </section>
+</ion-content>

@@ -1,0 +1,82 @@
+<ion-content mode="md">
+  <!--Login-->
+  <section class="center-content">
+    <ion-card class="card-form">
+      <ion-card-content>
+        <div class="intro-form">
+          <img class="logo" lazyLoad="assets/images/logo.png" />
+          <p class="title">Acesse sua conta</p>
+          <p>Entre com seu e-mail e senha</p>
+        </div>
+        <div class="box-form">
+          <form [formGroup]="formSignIn">
+            <ion-item lines="none" color="light">
+              <ion-label position="stacked">E-mail</ion-label>
+              <ion-input
+                formControlName="email"
+                placeholder="Digite seu e-mail"
+                type="email"
+                minlength="8"
+                maxlength="100"
+              ></ion-input>
+            </ion-item>
+            <ion-item lines="none" color="light">
+              <ion-label position="stacked">Senha</ion-label>
+              <ion-input
+                formControlName="password"
+                placeholder="Digite a senha"
+                [type]="!viewPass ? 'password' : 'text'"
+                minlength="8"
+                maxlength="100"
+              ></ion-input>
+              <ion-icon (click)="viewPass = !viewPass" slot="end" [name]="viewPass ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
+            </ion-item>
+            <ion-item lines="none" style="border: none;" color="transparent">
+              <ion-checkbox
+                (ionChange)="onChangePersistenceAuth($event)"
+              ></ion-checkbox>
+              <ion-button shape="round" fill="clear" color="dark">
+                <ion-label>Continuar conectado</ion-label>
+              </ion-button>
+            </ion-item>
+            <ion-button
+              (click)="onClickRecoverPassword()"
+              class="btn-esq-minha-senha"
+              shape="round"
+              fill="clear"
+              expand="full"
+              color="dark"
+            >
+              <ion-label>Esqueci minha senha</ion-label>
+            </ion-button>
+          </form>
+        </div>
+      </ion-card-content>
+      <ion-card-content>
+        <ion-button (click)="onClickContinue()" [disabled]="!formSignIn.valid || isLoading" class="btn" color="primary">
+          <ion-spinner
+            *ngIf="isLoading"
+            color="light"
+            name="dots"
+          ></ion-spinner>
+          <ion-label *ngIf="!isLoading">
+            <ion-label color="light">Acessar conta</ion-label>
+          </ion-label>
+        </ion-button>
+        <br />
+        
+        <br />
+        <ion-button
+          (click)="onClickSignUp()"
+          expand="full"
+          fill="clear"
+          size="small"
+          color="dark"
+        >
+          <ion-label>Cadastre-se</ion-label>
+        </ion-button>
+        
+      </ion-card-content>
+    </ion-card>
+  </section>
+</ion-content>

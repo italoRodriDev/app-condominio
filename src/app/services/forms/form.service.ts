@@ -102,6 +102,22 @@ export class FormService {
     password: this.passValidator,
   });
 
+  formSignUpFinish: FormGroup = this.fb.group({
+    name: this.nameValidator,
+    phone: this.phoneValidator,
+    cnpj: this.reqValidator,
+  });
+
+  formProfile: FormGroup = this.fb.group({
+    name: this.nameValidator,
+    email: this.emailValidator,
+    cpf: this.reqValidator,
+    birthDate: this.reqValidator,
+    phone: this.phoneValidator,
+    gender: this.reqValidator,
+    photoProfile: [],
+  });
+
   formAgendamento: FormGroup = this.fb.group({
     nomeResponsavel: this.nameValidator,
     data: this.reqValidator,
@@ -119,6 +135,8 @@ export class FormService {
     this.formRecoveryPass.reset();
     this.formSignIn.reset();
     this.formSignUp.reset();
+    this.formProfile.reset();
+    this.formSignUpFinish.reset();
     this.formAgendamento.reset();
   }
 }

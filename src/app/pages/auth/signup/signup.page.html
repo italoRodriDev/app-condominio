@@ -1,15 +1,15 @@
 <ion-content mode="md">
-  <!--Recuperar senha-->
+  <!-- Cadastro -->
   <section class="center-content">
     <ion-card class="card-form">
       <ion-card-content>
         <div class="intro-form">
           <img class="logo" lazyLoad="assets/images/logo.png" />
-          <p class="title">Redefina sua senha</p>
-          <p>Enviaremos um e-mail de recuperação</p>
+          <p class="title">Crie sua conta</p>
+          <p>Preencha com os dados</p>
         </div>
         <div class="box-form">
-          <form [formGroup]="formRecoveryPass">
+          <form [formGroup]="formSignUp">
             <ion-item lines="none" color="light">
               <ion-label position="stacked">E-mail</ion-label>
               <ion-input
@@ -20,27 +20,35 @@
                 maxlength="100"
               ></ion-input>
             </ion-item>
-            <br />
+            <ion-item lines="none" color="light">
+              <ion-label position="stacked">Crie uma senha</ion-label>
+              <ion-input
+                formControlName="password"
+                placeholder="Digite a senha"
+                [type]="!viewPass ? 'password' : 'text'"
+                minlength="8"
+                maxlength="100"
+              ></ion-input>
+              <ion-icon (click)="viewPass = !viewPass" slot="end" [name]="viewPass ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
+            </ion-item>
           </form>
         </div>
       </ion-card-content>
       <ion-card-content>
         <ion-button
-          [disabled]="!formRecoveryPass.valid"
+          [disabled]="!formSignUp.valid || isLoading"
+          (click)="onClickContinue()"
           class="btn"
-          color="tertiary"
         >
           <ion-spinner
             *ngIf="isLoading"
             name="dots"
           ></ion-spinner>
-          <ion-label *ngIf="!isLoading">
-            <ion-label color="light">Continuar</ion-label>
-          </ion-label>
+          <ion-label color="light" *ngIf="!isLoading">Avançar</ion-label>
         </ion-button>
-        <br />
-        <br />
-        <br />
+        <br/>
+        <br/>
+        <br/>
         <ion-button
           (click)="onClickSignIn()"
           expand="full"
@@ -48,9 +56,8 @@
           size="small"
           color="dark"
         >
-          <ion-label>Lembrou da senha? Acesse</ion-label>
+          <ion-label>Já possui uma conta? Entre</ion-label>
         </ion-button>
-        <br />
       </ion-card-content>
     </ion-card>
   </section>

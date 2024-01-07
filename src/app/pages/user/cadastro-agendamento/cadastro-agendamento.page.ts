@@ -50,7 +50,7 @@ export class CadastroAgendamentoPage implements OnInit {
     this.listDatasOcupadas = [];
     this.listAgendamentos.forEach((el) => {
       this.listDatasOcupadas.push({
-        date: el.data,
+        date: moment(el.data).format('YYYY-MM-DD'),
         textColor: '#800080',
         backgroundColor: '#ffc0cb',
       });

@@ -4,7 +4,7 @@
   [ngClass]="collapsed ? 'sidenav-collapsed' : ''"
 >
   <div class="logo-container">
-    <img class="logo-pedidex" *ngIf="collapsed" src="/assets/images/logo.png" />
+    <img class="logo-img" *ngIf="collapsed" src="/assets/images/logo.png" />
     <ion-button
       class="btn-close"
       *ngIf="!collapsed"
@@ -53,7 +53,7 @@
   <div>
     <div class="logo-container">
       <img
-        class="logo-pedidex"
+        class="logo-img"
         *ngIf="collapsed"
         src="/assets/images/logo.png"
       />
@@ -101,7 +101,7 @@
 <div class="container-button-mobile">
   <ion-fab *ngIf="isMobile" slot="fixed" vertical="bottom" horizontal="start">
     <ion-fab-button (click)="onClickShowMenu()">
-      <ion-icon [name]="showMenu ? 'close' : 'menu-outline'"></ion-icon>
+      <ion-icon [name]="showMenu ? 'close' : 'menu-outline'" color="light"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </div>

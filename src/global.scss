@@ -24,3 +24,195 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+@font-face {
+    font-family: "Popins";
+    font-weight: bold;
+    src: url("../src/assets/fonts/Poppins-Bold.ttf");
+  }
+  
+  @font-face {
+    font-family: "Popins";
+    font-style: medium;
+    src: url("../src/assets/fonts/Poppins-SemiBold.ttf");
+  }
+  
+  @font-face {
+    font-family: "Popins";
+    font-style: normal;
+    font-weight: normal;
+    src: url("../src/assets/fonts/Poppins-Regular.ttf");
+  }
+  
+  @font-face {
+    font-family: "Popins";
+    src: url("../src/assets/fonts/Poppins-Italic.ttf");
+    font-style: italic;
+  }
+  
+  @font-face {
+    font-family: "Popins";
+    src: url("../src/assets/fonts/Poppins-Light.ttf");
+  }
+  
+  ion-header {
+    box-shadow: none;
+    border-bottom: 1px solid var(--ion-color-primary);
+    font-family: "Popins";
+  }
+  
+  ion-content {
+    font-family: "Popins";
+  }
+  
+  body {
+    font-family: "Popins";
+  }
+
+
+  ion-list {
+    background-color: transparent;
+  }
+  
+  ion-item {
+    background-color: transparent;
+  }
+  
+  ion-button {
+    text-transform: none;
+    --box-shadow: none;
+  }
+  
+  ion-fab-button {
+    --box-shadow: none;
+  }
+  
+  ion-checkbox {
+    --border-color: var(--ion-color-medium);
+  }
+  
+  ion-content {
+    --background-color: #FAFAFA;
+  }
+
+  // -> CSS MODAL
+.custom-css-modal-desktop {
+    align-items: center;
+    justify-content: center;
+    --min-height: 100%;
+    --min-width: 100%;
+    --max-height: 100%;
+    --max-width: 100%;
+  }
+  
+  .custom-css-modal-right {
+    align-items: end;
+    justify-content: end;
+    right: 0;
+  }
+  
+  .main {
+    padding-top: 50px;
+    margin-left: 20px;
+    ion-list {
+      overflow: auto;
+    }
+  }
+  
+  .main-adm {
+    padding-top: 50px;
+    margin-left: 100px;
+    ion-list {
+      overflow: auto;
+    }
+  }
+
+  // -> MODO MOBILE
+@media only screen and (max-width: 600px) {
+    .main {
+      padding-top: 20px;
+      margin-left: 2px;
+      margin-right: 2px;
+      ion-list {
+        overflow: auto;
+      }
+    }
+  
+    .main-adm {
+      padding-top: 20px;
+      margin-left: 2px;
+      margin-right: 2px;
+      ion-list {
+        overflow: auto;
+      }
+    }
+  
+    .box-grid-table {
+      min-width: 1080px;
+    }
+  }
+
+  img.ng-lazyloaded {
+    animation: fadein 2.8s;
+  }
+  
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  // -> Estilos do Input de mascara
+  .input-mask {
+    border-radius: 10px;
+    border: 1px solid var(--ion-color-primary);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    p {
+      position: absolute;
+      left: 0;
+      padding-bottom: 22px;
+      font-size: 12px;
+    }
+    input {
+      border-radius: 10px;
+      text-align: left;
+      left: 0;
+      padding-top: 18px;
+      top: 0;
+      bottom: 0;
+      height: 100%;
+      width: 100%;
+      background-color: transparent;
+      border: none;
+      font-size: 16px;
+    }
+    input:focus {
+      outline: none;
+    }
+  
+    input::placeholder {
+      opacity: 0.5;
+      color: rgb(48, 48, 48);
+    }
+  
+    input:focus {
+      border-color: var(--ion-color-primary);
+    }
+  
+    input:disabled {
+      background-color: var(--ion-color-light);
+    }
+  
+    input {
+      color: var(--ion-color-dark);
+    }
+  
+    input {
+      font-size: var(--ion-text-caption-font-size);
+    }
+  }
+  

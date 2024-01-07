@@ -3,20 +3,37 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'inicio',
+    redirectTo: 'entrar',
+    pathMatch: 'full',
+  },
+  {
+    path: '',
+    redirectTo: 'entrar',
     pathMatch: 'full',
   },
   {
     path: 'entrar',
-    loadComponent: () => import('./pages/auth/login/login.page').then( m => m.LoginPage)
+    loadComponent: () =>
+      import('./pages/auth/signin/signin.page').then((m) => m.SigninPage),
   },
   {
     path: 'cadastro',
-    loadComponent: () => import('./pages/auth/create-account/create-account.page').then( m => m.CreateAccountPage)
+    loadComponent: () =>
+      import('./pages/auth/signup/signup.page').then((m) => m.SignupPage),
   },
   {
-    path: 'recuperacao-conta',
-    loadComponent: () => import('./pages/auth/recover-password/recover-password.page').then( m => m.RecoverPasswordPage)
+    path: 'finalizar-cadastro',
+    loadComponent: () =>
+      import('./pages/auth/finish-signup/finish-signup.page').then(
+        (m) => m.FinishSignupPage
+      ),
+  },
+  {
+    path: 'recuperacao',
+    loadComponent: () =>
+      import('./pages/auth/recover-password/recover-password.page').then(
+        (m) => m.RecoverPasswordPage
+      ),
   },
   // -> USUARIO
   {

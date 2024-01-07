@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, Platform } from '@ionic/angular';
-import { ModalController } from '@ionic/angular/standalone';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -17,10 +17,10 @@ export class SideBarComponent implements OnInit {
   operationStore: boolean = false;
 
   constructor(
+    private authService: AuthService,
     private platform: Platform,
     private navCtrl: NavController,
-    private activateRoute: ActivatedRoute,
-    private modalCtrl: ModalController
+    private activateRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -39,7 +39,7 @@ export class SideBarComponent implements OnInit {
 
   onClickItemMenu(router: any) {
     if (router == 'SAIR_DA_CONTA') {
-      //his.authService.signOutAccount();
+      this.authService.signOutAccount();
     } else {
       this.navCtrl.navigateRoot(router);
     }

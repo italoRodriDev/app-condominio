@@ -9,6 +9,8 @@ import { AgendamentoAreaGourmetService } from 'src/app/services/user/agendamento
 import { InfoAgendamentoPage } from '../info-agendamento/info-agendamento.page';
 import * as moment from 'moment';
 import { SharedComponentsModule } from 'src/app/components/shared-components.module';
+import { NAVBAR_DATA_MENU } from 'src/app/components/side-bar/nav-data';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -18,9 +20,11 @@ import { SharedComponentsModule } from 'src/app/components/shared-components.mod
   imports: [IonicModule, CommonModule, FormsModule, SharedComponentsModule],
 })
 export class HomePage implements OnInit {
+  sideBarItems = NAVBAR_DATA_MENU;
   listAgendamentos: Array<AgendamentoModel> = [];
   listDatesCalendar: Array<any> = [];
   constructor(
+    private authService: AuthService,
     private agendamentoAreaGourmetService: AgendamentoAreaGourmetService,
     private modalCtrl: ModalController
   ) {}
@@ -32,7 +36,9 @@ export class HomePage implements OnInit {
   }
 
   getDataService() {
-    this.agendamentoAreaGourmetService.getListItems();
+    this.authService.bsDataUser.subscribe((data) => {
+      this.agendamentoAreaGourmetService.getListItems();
+    });
     this.agendamentoAreaGourmetService.listItems.subscribe((list) => {
       this.listAgendamentos = list;
       this.addDaysToCalendar();
@@ -43,7 +49,7 @@ export class HomePage implements OnInit {
     this.listDatesCalendar = [];
     this.listAgendamentos.forEach((el) => {
       this.listDatesCalendar.push({
-        date: el.data,
+        date: moment(el.data).format('YYYY-MM-DD'),
         textColor: '#800080',
         backgroundColor: '#ffc0cb',
       });
@@ -59,8 +65,10 @@ export class HomePage implements OnInit {
 
   onClickDateCalendar(ev: any) {
     const value = ev.detail.value;
-    const item = this.listAgendamentos.find((el) => el.data == moment(value).format('YYYY-MM-DD'));
-    if(item != null) {
+    const item = this.listAgendamentos.find(
+      (el) => el.data == moment(value).format('YYYY-MM-DD')
+    );
+    if (item != null) {
       this.onClickItemCardCalendar(item);
     }
   }
@@ -69,10 +77,9 @@ export class HomePage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: InfoAgendamentoPage,
       componentProps: {
-        data: item
-      }
+        data: item,
+      },
     });
     await modal.present();
   }
-
-} 
+}
