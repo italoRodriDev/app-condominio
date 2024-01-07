@@ -6,13 +6,16 @@ import { IonicModule } from '@ionic/angular';
 import { ModalController } from '@ionic/angular/standalone';
 import { AgendamentoModel } from 'src/app/models/agendamento.model';
 import { AgendamentoAreaGourmetService } from 'src/app/services/user/agendamento-area-gourmet.service';
+import { InfoAgendamentoPage } from '../info-agendamento/info-agendamento.page';
+import * as moment from 'moment';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [IonicModule, CommonModule, FormsModule, SharedComponentsModule],
 })
 export class HomePage implements OnInit {
   listAgendamentos: Array<AgendamentoModel> = [];
@@ -53,4 +56,23 @@ export class HomePage implements OnInit {
     });
     await modal.present();
   }
-}
+
+  onClickDateCalendar(ev: any) {
+    const value = ev.detail.value;
+    const item = this.listAgendamentos.find((el) => el.data == moment(value).format('YYYY-MM-DD'));
+    if(item != null) {
+      this.onClickItemCardCalendar(item);
+    }
+  }
+
+  async onClickItemCardCalendar(item: AgendamentoModel) {
+    const modal = await this.modalCtrl.create({
+      component: InfoAgendamentoPage,
+      componentProps: {
+        data: item
+      }
+    });
+    await modal.present();
+  }
+
+} 

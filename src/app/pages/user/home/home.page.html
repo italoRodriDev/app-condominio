@@ -10,8 +10,7 @@
   <ion-card color="light">
     <ion-card-content>
       <ion-datetime
-        min="2022-03-01T00:00:00"
-        max="2026-05-31T23:59:59"
+        (ionChange)="onClickDateCalendar($event)"
         locale="pt-BR"
         [highlightedDates]="listDatesCalendar"
         presentation="date"
@@ -26,11 +25,12 @@
   <br />
   <ion-title>Próximos eventos</ion-title>
   <ion-list>
-    <ion-item *ngFor="let item of listAgendamentos" button color="light">
+    <ion-item *ngFor="let item of listAgendamentos" (click)="onClickItemCardCalendar(item)" button color="light">
       <ion-label
         >{{ item.data | date: 'dd' }} - {{ item.tipo }} - Apt: {{
         item.apartamento }}</ion-label
       >
     </ion-item>
+    <app-skeleton-list *ngIf="!listAgendamentos.length" image="calendario_anim.svg"></app-skeleton-list>
   </ion-list>
 </ion-content>

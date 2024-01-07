@@ -1,0 +1,50 @@
+ion-header {
+    box-shadow: none;
+    border-bottom: 1px solid #c0fdcd;
+  }
+  
+  ion-card {
+    border-radius: 30px;
+  }
+  
+  ion-button {
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+  
+  .box-form {
+    background-color: whitesmoke;
+    padding: 20px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 20px;
+    ion-item {
+      border-radius: 4px;
+      margin: 8px;
+      border: 1px solid var(--ion-color-medium);
+    }
+  }
+  
+  // -> MODO MOBILE
+  @media only screen and (max-width: 600px) {
+    ion-toolbar {
+      margin-left: 0;
+      margin-right: 0%;
+      margin-top: 10px;
+    }
+  
+    .box-form {
+      background-color: transparent;
+      padding: 10px;
+      margin-left: 1%;
+      margin-right: 1%;
+      margin-top: 10px;
+  
+      ion-item {
+        border-radius: 4px;
+        margin: 8px;
+        border: 1px solid var(--ion-color-medium);
+      }
+    }
+  }
+  

@@ -33,7 +33,7 @@
           <ion-select
             formControlName="tipo"
             label="Tipo de evento"
-            placeholder="Selecione"
+            placeholder="Selecionar"
             cancelText="Cancelar"
             okText="Confirmar"
           >
@@ -59,7 +59,7 @@
         </ion-item>
         <ion-card color="light">
           <ion-card-header>
-            <ion-label>Selecione</ion-label>
+            <ion-label>Selecione a data do evento</ion-label>
           </ion-card-header>
           <ion-card-content>
             <ion-datetime
@@ -86,6 +86,7 @@
       <ion-button
         (click)="onClickSave()"
         shape="round"
+        expand="full"
         [disabled]="!form.valid"
       >
         <ion-label color="light">Enviar agendamento</ion-label>

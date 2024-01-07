@@ -21,7 +21,7 @@ export class CadastroAgendamentoPage implements OnInit {
   listAgendamentos: Array<AgendamentoModel> = [];
   listDatasOcupadas: Array<any> = [];
   datasLivres: Array<any> = [];
-  mesInicial = moment().format();
+  mesInicial = moment().add(1, 'day').format();
   mesLimite = moment().add(1, 'month').format();
 
   constructor(
@@ -40,13 +40,6 @@ export class CadastroAgendamentoPage implements OnInit {
   }
 
   getDataService() {
-    this.form.patchValue({
-      nomeResponsavel: 'Italo',
-      apartamento: '310',
-      observacao: 'nada ffffffffffffffffffffffffffff',
-      data: '2024-01-19',
-      tipo: 'Churrasco',
-    });
     this.service.listItems.subscribe((list) => {
       this.listAgendamentos = list;
       this.addDaysToCalendar();

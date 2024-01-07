@@ -1,7 +1,7 @@
 <div *ngIf="time == false"  class="container-label">
   <ion-label>
     <p>
-      <img class="animation" lazyLoad="assets/images/animation_list.gif">
+      <img class="animation" [lazyLoad]="'assets/images/' + image">
     </p>
     <p class="label">
       {{ label }}

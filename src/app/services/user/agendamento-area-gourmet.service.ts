@@ -6,6 +6,7 @@ import { FormGroup } from '@angular/forms';
 import { AlertsService } from '../alerts/alerts.service';
 import { ModalController } from '@ionic/angular';
 import { BehaviorSubject, finalize } from 'rxjs';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,13 @@ export class AgendamentoAreaGourmetService {
       .subscribe((data) => {
         this.bsItems.next([]);
         if (data.length) {
-          this.bsItems.next(data);
+
+          const sortDate = data.sort((a: any, b: any) => {
+            const dateA = moment(a.data, 'YYYY-MM-DD');
+            const dateB = moment(b.data, 'YYYY-MM-DD');
+            return dateA.diff(dateB);
+          });
+          this.bsItems.next(sortDate);
         }
       });
   }
@@ -73,6 +80,7 @@ export class AgendamentoAreaGourmetService {
       .delete()
       .then(() => {
         this.alertService.showToast('Excluido com sucesso!');
+        this.modalCtrl.dismiss();
       })
       .catch((error) => {
         this.alertService.showToast('Erro: ' + error.code);

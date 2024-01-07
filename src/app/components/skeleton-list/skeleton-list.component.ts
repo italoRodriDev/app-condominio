@@ -7,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class SkeletonListComponent implements OnInit {
 
+  @Input() image: string = 'lista_vazia_anim.svg';
   @Input() label = 'Não existem dados para exibir...';
   public buffer = 0.06;
   public progress = 0;
