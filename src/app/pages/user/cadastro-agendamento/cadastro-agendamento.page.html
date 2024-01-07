@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button (click)="onDismiss()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-title>Novo agendamento</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content mode="md">
+  <div class="box-form">
+    <ion-list>
+      <form [formGroup]="form">
+        <ion-item lines="none" style="border: none">
+          <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+          <ion-label>Preencha as informações</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            formControlName="nomeResponsavel"
+            label="Nome do responsável"
+            minlength="1"
+            maxlength="150"
+            labelPlacement="stacked"
+            placeholder="Digite o nome do instrumento..."
+            autocorrect="on"
+            spellcheck="true"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-select
+            formControlName="tipo"
+            label="Tipo de evento"
+            placeholder="Selecione"
+            cancelText="Cancelar"
+            okText="Confirmar"
+          >
+            <ion-select-option> Churrasco </ion-select-option>
+            <ion-select-option> Aniversário </ion-select-option>
+            <ion-select-option> Carnaval </ion-select-option>
+            <ion-select-option> Dia das crianças </ion-select-option>
+            <ion-select-option> Ano Novo </ion-select-option>
+            <ion-select-option> Natal </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            formControlName="apartamento"
+            label="Apartamento / bloco"
+            minlength="1"
+            maxlength="150"
+            labelPlacement="stacked"
+            placeholder="Digite o apartamento / bloco..."
+            autocorrect="on"
+            spellcheck="true"
+          ></ion-input>
+        </ion-item>
+        <ion-card color="light">
+          <ion-card-header>
+            <ion-label>Selecione</ion-label>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-datetime
+              formControlName="data"
+              [min]="mesInicial"
+              [max]="mesLimite"
+              locale="pt-BR"
+              [highlightedDates]="listDatasOcupadas"
+              [isDateEnabled]="isWeekday"
+              presentation="date"
+              mode="ios"
+            ></ion-datetime>
+          </ion-card-content>
+        </ion-card>
+        <ion-item>
+          <ion-textarea
+            formControlName="observacao"
+            label="Observações:"
+            rows="4"
+          >
+          </ion-textarea>
+        </ion-item>
+      </form>
+      <ion-button
+        (click)="onClickSave()"
+        shape="round"
+        [disabled]="!form.valid"
+      >
+        <ion-label color="light">Enviar agendamento</ion-label>
+      </ion-button>
+    </ion-list>
+  </div>
+</ion-content>

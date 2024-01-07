@@ -5,14 +5,14 @@
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "AIzaSyAtbynhaagoqhtH_U3ZxVL-52XiBpd_3K8",
-    authDomain: "festas-3x-solutions.firebaseapp.com",
-    projectId: "festas-3x-solutions",
-    storageBucket: "festas-3x-solutions.appspot.com",
-    messagingSenderId: "1052771194132",
-    appId: "1:1052771194132:web:bbce1d7fb8a1b345821e01",
-    measurementId: "G-Q4VVEP7LYJ"
-  }
+    apiKey: 'AIzaSyAUzi7ikmvrEN1zJIdTp9KEhkiRE6riWTE',
+    authDomain: 'app-condominio-7994d.firebaseapp.com',
+    projectId: 'app-condominio-7994d',
+    storageBucket: 'app-condominio-7994d.appspot.com',
+    messagingSenderId: '927654047019',
+    appId: '1:927654047019:web:031c76a82b6df15f88e96e',
+    measurementId: 'G-L0YF9X6FZT',
+  },
 };
 
 /*

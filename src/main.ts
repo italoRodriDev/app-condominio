@@ -17,6 +17,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 if (environment.production) {
   enableProdMode();
@@ -26,14 +27,14 @@ bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
-    importProvidersFrom(
+    importProvidersFrom( 
       AngularFireModule.initializeApp(environment.firebaseConfig),
       IonicModule.forRoot({}),
       AngularFireDatabaseModule,
       AngularFireAuthModule,
+      AngularFirestoreModule,
       provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-      HttpClientModule,
-      provideFirestore(() => getFirestore())
+      HttpClientModule
     ),
     provideRouter(routes),
   ],
