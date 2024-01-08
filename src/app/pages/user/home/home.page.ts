@@ -36,7 +36,7 @@ export class HomePage implements OnInit {
   }
 
   getDataService() {
-    this.authService.bsDataUser.subscribe((data) => {
+    this.authService.bsDataCondominio.subscribe((data) => {
       this.agendamentoAreaGourmetService.getListItems();
     });
     this.agendamentoAreaGourmetService.listItems.subscribe((list) => {

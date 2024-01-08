@@ -7,10 +7,10 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: '',
-    redirectTo: 'entrar',
-    pathMatch: 'full',
+    path: 'splash/:id',
+    loadComponent: () => import('./pages/auth/splash/splash.page').then( m => m.SplashPage)
   },
+ 
   {
     path: 'entrar',
     loadComponent: () =>
@@ -20,6 +20,10 @@ export const routes: Routes = [
     path: 'cadastro',
     loadComponent: () =>
       import('./pages/auth/signup/signup.page').then((m) => m.SignupPage),
+  },
+  {
+    path: 'criar-senha',
+    loadComponent: () => import('./pages/auth/confirm-password/confirm-password.page').then( m => m.ConfirmPasswordPage)
   },
   {
     path: 'finalizar-cadastro',
@@ -60,4 +64,5 @@ export const routes: Routes = [
     path: 'edit-apartamento',
     loadComponent: () => import('./pages/admin/apartamentos/edit-apartamento/edit-apartamento.page').then( m => m.EditApartamentoPage)
   },
+  
 ];

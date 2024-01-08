@@ -1,5 +1,5 @@
 export enum TypeRegister {
-    USER = 'usuario',
+    MORADOR = 'morador',
     ADMIN = '09101999',
     CONDOMINIO = 'condominio'
 }

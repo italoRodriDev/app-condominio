@@ -4,13 +4,13 @@ import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormGroup } from '@angular/forms';
 import { NavController } from '@ionic/angular';
+import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { TypeRegister } from 'src/app/enum/type_user';
-import { CondominioModel } from 'src/app/models/condomio.model';
+import { ApartamentosService } from '../admin/apartamentos.service';
 import { AlertsService } from '../alerts/alerts.service';
 import { FormService } from '../forms/form.service';
 import { AgendamentoAreaGourmetService } from '../user/agendamento-area-gourmet.service';
-import { ApartamentosService } from '../admin/apartamentos.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,11 +22,16 @@ export class AuthService {
   formSignUpFinish: FormGroup = this.formService.formSignUpFinish;
   formRecoveryPass: FormGroup = this.formService.formRecoveryPass;
   formProfile: FormGroup = this.formService.formProfile;
+
   idUser: string | undefined;
+  idCondominio: string | undefined;
+  typeRegister: string = TypeRegister.MORADOR;
   public bsAuth = new BehaviorSubject(false);
   isAuth = this.bsAuth.asObservable();
-  public bsDataUser = new BehaviorSubject<any>(null);
-  dataUser = this.bsDataUser.asObservable();
+  public bsDataCondominio = new BehaviorSubject<any>(null);
+  dataCondominio = this.bsDataCondominio.asObservable();
+  public bsDataApt = new BehaviorSubject<any>(null);
+  dataApt = this.bsDataApt.asObservable();
 
   constructor(
     private formService: FormService,
@@ -38,190 +43,176 @@ export class AuthService {
     private agendamentoAreaGourmetService: AgendamentoAreaGourmetService,
     private apartamentosService: ApartamentosService
   ) {
-    this.getCurrentUser();
+    this.checkIfLogin();
   }
 
   // -> Recuperando usuario atual
-  getCurrentUser() {
-    this.fireAuth.onAuthStateChanged((res) => {
-      const idUser = res?.uid;
-      this.idUser = idUser;
-      if (idUser) {
-        this.bsAuth.next(true);
-        this.getData(idUser);
+  checkIfLogin() {
+    this.fireAuth.onAuthStateChanged((user) => {
+      if (user?.uid != null) {
+        const idCondominio = localStorage.getItem('condominio');
+        if (idCondominio) {
+          this.idCondominio = idCondominio;
+        }
+        this.navigationToHome();
       } else {
-        this.bsAuth.next(false);
+        this.navCtrl.navigateForward('entrar');
       }
     });
   }
 
-  // -> Verificar se o cadastro foi completado
-  getData(idUser: string) {
-    this.fireStore
-      .collection('Registrations')
-      .doc(idUser)
-      .get()
-      .subscribe((data) => {
-        const docData: any = data.data();
-        if (docData) {
-          if (docData.name == null) {
-            this.navCtrl.navigateForward('finalizar-cadastro');
-          } else {
-            this.sharedCurrentData(docData);
-            this.bsDataUser.next(docData);
-          }
+  navigationToHome() {
+    this.fireAuth.currentUser.then((user) => {
+      if (user?.emailVerified) {
+        this.getDataUser(user?.uid);
+        this.navCtrl.navigateForward('inicio');
+      } else {
+        if (user?.email != null) {
+          this.checkAndSendVerificationEmail(user?.email?.toString());
         }
-      });
-  }
-
-  // -> Compatilhando dados do usuario para outros servicos
-  sharedCurrentData(data: CondominioModel) {
-    this.agendamentoAreaGourmetService.condominio = data;
-    this.apartamentosService.condominio = data;
-    this.validateRouteInitApp(data.typeRegister);
-  }
-
-  // -> Logando usuario com email e senha
-  signInAccount(persistenceType: string) {
-    const email = this.formAuthSignIn.controls['email'].value;
-    const password = this.formAuthSignIn.controls['password'].value;
-
-    return new Promise<any>((resolve) => {
-      this.fireAuth.setPersistence(persistenceType).then(() => {
-        this.fireAuth
-          .signInWithEmailAndPassword(email, password)
-          .then((res) => {
-            const idUser = res?.user?.uid;
-
-            if (idUser) {
-              this.formService.resetDataForm();
-              this.getCurrentUser();
-              resolve(false);
-            }
-          })
-          .catch((error) => {
-            resolve(false);
-            this.getError(error?.code);
-          });
-      });
+      }
     });
   }
 
-  // -> Criando conta do usuario
-  createAccount(typeRegister: TypeRegister) {
-    const email = this.formAuthSignUp.controls['email'];
-    const password = this.formAuthSignUp.controls['password'];
+  getDataUser(idUser: string) {
+    this.fireStore
+        .collection('Apartamentos')
+        .doc(this.idCondominio)
+        .collection('dados', (q) => q.where('idUser', '==', idUser))
+        .get()
+        .subscribe((data) => {
+          if (data.docs.length) {
+            const userData: any = data.docs[0].data();
+            if (userData) {
+              this.agendamentoAreaGourmetService.condominio = userData.condominio; 
+              this.apartamentosService.condominio = userData.condominio;
+              this.bsDataApt.next(userData);
+              this.bsDataCondominio.next(userData.condominio);
+            }
+          }
+        });
+  }
 
+  checkAndSendVerificationEmail(textEmail: string) {
+    this.fireAuth.currentUser
+      .then((user) => {
+        if (user != null && !user?.emailVerified) {
+          user.sendEmailVerification();
+          this.alertService.showAlert(
+            'Ative sua conta.',
+            `Enviamos um link de ativação para seu e-mail ${textEmail}!`
+          );
+          this.navCtrl.navigateForward('entrar');
+        } else {
+          this.navCtrl.navigateForward('entrar');
+        }
+      })
+      .catch((e) => {
+        this.getError(e);
+      });
+  }
+
+  signIn() {
     return new Promise<any>((resolve) => {
+      const email = this.formAuthSignIn.controls['email'];
+      const password = this.formAuthSignIn.controls['password'];
+
+      if (email.valid && password.valid) {
+        this.fireAuth
+          .signInWithEmailAndPassword(email.value, password.value)
+          .then((result) => {
+            resolve(false);
+            this.navigationToHome();
+          })
+          .catch((e) => {
+            resolve(false);
+            this.validateCompleteRegister();
+            this.getError(e);
+          });
+      }
+    });
+  }
+
+  signUp() {
+    return new Promise<any>((resolve) => {
+      const idApt = this.formAuthSignUp.controls['idApt'];
+      const email = this.formAuthSignUp.controls['email'];
+      const password = this.formAuthSignUp.controls['password'];
       if (email.valid && password.valid) {
         this.fireAuth
           .createUserWithEmailAndPassword(email.value, password.value)
           .then((res) => {
-            res.user?.sendEmailVerification();
-            const idUser = res?.user?.uid;
-            if (idUser) {
-              resolve(false);
-              this.saveDataAuthUser(idUser, email.value, typeRegister);
-            }
+            const idUser = res.user!.uid.toString();
+            this.fireStore
+              .collection('Apartamentos')
+              .doc(this.idCondominio)
+              .collection('dados')
+              .doc(idApt.value)
+              .update({
+                idUser: idUser,
+                typeUser: 'APT',
+                dataCadastro: moment().format(),
+                perfilCompleto: true,
+              })
+              .then((data) => {
+                resolve(false);
+                this.checkAndSendVerificationEmail(
+                  res!.user!.email!.toString()
+                );
+              })
+              .catch((e) => {
+                resolve(false);
+              });
           })
-          .catch((error) => {
+          .catch((e) => {
             resolve(false);
-            this.getError(error?.code);
+            this.getError(e);
           });
-      } else {
-        resolve(false);
       }
     });
   }
 
-  // -> Salvando id do usuário
-  saveDataAuthUser(idUser: string, email: string, typeRegister: string) {
-    this.fireStore
-      .collection('Registrations')
-      .doc(idUser)
-      .set({ idUser: idUser, email: email, typeRegister: typeRegister })
-      .then(() => {
-        this.formService.resetDataForm();
-        this.navCtrl.navigateForward('finalizar-cadastro');
-      })
-      .catch((error) => {
-        this.alertService.showToast('Erro: ' + error.code);
-      });
+  validateCompleteRegister() {
+    const email = this.formAuthSignIn.controls['email'];
+    if (email.valid) {
+      this.fireStore
+        .collection('Apartamentos')
+        .doc(this.idCondominio)
+        .collection('dados', (q) => q.where('email', '==', email.value))
+        .get()
+        .subscribe((data) => {
+          if (data.docs.length) {
+            const userData: any = data.docs[0].data();
+            if (userData.perfilCompleto == false) {
+              if (userData.status == true) {
+                this.formAuthSignUp.patchValue({
+                  idApt: userData.id.toString(),
+                  email: userData.email.toString(),
+                });
+                this.navCtrl.navigateForward('criar-senha');
+              } else {
+                this.alertService.showToast('Seu acesso foi bloqueado!');
+              }
+            }
+          } else {
+            this.alertService.showToast('Usuário não encontrado!');
+          }
+        });
+    }
   }
 
-  // -> Salvando dados do usuario finalizar cadastro
-  saveDataFinishSignUp() {
-    return new Promise<any>((resolve) => {
-      if (this.formSignUpFinish.valid) {
-        if (this.idUser != null) {
-          this.fireStore
-            .collection('Registrations')
-            .doc(this.idUser)
-            .update(this.formSignUpFinish.value)
-            .then(() => {
-              this.alertService.showAlert(
-                'Sua conta foi criada com sucesso!',
-                'Agora só aproveitar todos os nosso serviços.'
-              );
-              this.getCurrentUser();
-              resolve(false);
-            })
-            .catch((error) => {
-              resolve(false);
-              this.alertService.showToast(
-                'Erro ao cadastrar dados! Erro: ' + error.code
-              );
-            });
-        } else {
-          this.alertService.showToast('Faça o login novamente!');
-        }
-      } else {
-        this.alertService.showToast('Dados inválidos, tente novamente!');
-      }
-    });
-  }
-
-  // -> Atualizando perfil
-  updateProfileUser() {
-    return new Promise<any>((resolve) => {
-      if (this.formProfile.valid) {
-        if (this.idUser != null) {
-          this.fireStore
-            .collection('Registrations')
-            .doc(this.idUser)
-            .update(this.formProfile.value)
-            .then(() => {
-              this.alertService.showToast('Dados atualizados com sucesso!');
-              resolve(false);
-            })
-            .catch((error) => {
-              resolve(false);
-              this.alertService.showToast(
-                'Erro ao atualizar dados! Erro: ' + error.code
-              );
-            });
-        } else {
-          this.alertService.showToast('Faça o login novamente!');
-        }
-      } else {
-        this.alertService.showToast('Dados inválidos, tente novamente!');
-      }
-    });
-  }
-
-  // -> Recuperando conta
   sendPasswordResetEmail() {
-    const email = this.formRecoveryPass.controls['email'];
-
     return new Promise<any>((resolve) => {
+      const email = this.formRecoveryPass.controls['email'];
+
       if (email.valid) {
         this.fireAuth
           .sendPasswordResetEmail(email.value)
           .then(() => {
             resolve(false);
             this.alertService.showAlert(
-              'Enviamos um email para você!',
-              'Agora só dar continuidade na recuperação da sua conta.'
+              'Verifique seu e-mail',
+              'Enviamos um e-mail de recuperação de senha!'
             );
           })
           .catch((error) => {
@@ -235,16 +226,6 @@ export class AuthService {
     });
   }
 
-  // -> Validando rotas de inicio
-  validateRouteInitApp(typeRegister: string) {
-    switch (typeRegister) {
-      case TypeRegister.CONDOMINIO:
-        this.navCtrl.navigateForward('inicio');
-        break;
-    }
-  }
-
-  // -> Sair da conta
   signOutAccount() {
     this.fireAuth
       .signOut()
@@ -259,7 +240,6 @@ export class AuthService {
       });
   }
 
-  // -> Validadacao de autenticacao
   getError(res: any) {
     switch (res) {
       case 'auth/invalid-email':

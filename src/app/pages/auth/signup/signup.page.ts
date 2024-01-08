@@ -44,9 +44,9 @@ export class SignupPage implements OnInit {
 
   onClickContinue() {
     this.isLoading = true;
-    this.authService
-      .createAccount(this.typeRegister)
-      .then((loading) => (this.isLoading = loading));
+    //this.authService
+    //  .createAccount()
+    //  .then((loading) => (this.isLoading = loading));
   }
 
   onClickBack() {

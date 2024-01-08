@@ -1,16 +1,3 @@
-ion-header {
-  --ion-background-color: white;
-  --ion-box-shadow: none;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
-
-/* Estilizando a barra de ferramentas (ion-toolbar) dentro do ion-header */
-ion-header ion-toolbar {
-  --ion-background-color: white;
-  --ion-box-shadow: none;
-}
-
 ion-card {
   border-radius: 30px;
 }

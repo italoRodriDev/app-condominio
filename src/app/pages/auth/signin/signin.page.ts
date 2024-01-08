@@ -1,37 +1,44 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { IonicModule, NavController } from '@ionic/angular';
-import { FormService } from 'src/app/services/forms/form.service';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { TypeRegister } from 'src/app/enum/type_user';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { FormService } from 'src/app/services/forms/form.service';
 
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.page.html',
   styleUrls: ['./signin.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, LazyLoadImageModule, ReactiveFormsModule]
+  imports: [
+    IonicModule,
+    CommonModule,
+    FormsModule,
+    LazyLoadImageModule,
+    ReactiveFormsModule,
+  ],
 })
 export class SigninPage implements OnInit {
   formSignIn: FormGroup = this.formService.formSignIn;
   isLoading: boolean = false;
   typePersistence: string = 'session';
   viewPass: boolean = false;
+  typeRegister: string = TypeRegister.MORADOR;
 
   constructor(
     private authService: AuthService,
     private formService: FormService,
     private navCtrl: NavController
-  ) { }
+  ) {}
 
-  ngOnInit() {
-    this.authService.getCurrentUser();
-  }
+  ngOnInit() {}
 
   onChangePersistenceAuth(ev: any) {
     const checked = ev.detail.checked;
-    if(checked == true) {
+    if (checked == true) {
       this.typePersistence = 'local';
     } else {
       this.typePersistence = 'session';
@@ -48,9 +55,8 @@ export class SigninPage implements OnInit {
 
   onClickContinue() {
     this.isLoading = true;
-    this.authService.signInAccount(this.typePersistence).then((loading) => {
+    this.authService.signIn().then((loading) => {
       this.isLoading = loading;
     });
   }
-
 }

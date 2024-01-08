@@ -47,9 +47,9 @@ export class FinishSignupPage implements OnInit {
 
   onClickContinue() {
     if (this.checkedTerms) {
-      this.authService
-        .saveDataFinishSignUp()
-        .then((loading) => (this.isLoading = loading));
+    //  this.authService
+    //    .saveDataFinishSignUp()
+    //    .then((loading) => (this.isLoading = loading));
     } else {
       this.alertService.showAlert(
         'Aceite nossos termos primeiro!',

@@ -88,6 +88,15 @@ export class FormService {
     [Validators.required, Validators.pattern(PRICE_REGEX)],
   ];
 
+  formConfirmPass: FormGroup = this.fb.group({
+    idUser: this.reqValidator,
+    idApt: this.reqValidator,
+    idCondominio: this.reqValidator,
+    email: this.emailValidator,
+    password: this.passValidator,
+    confirmPassword: this.reqValidator
+  });
+
   formRecoveryPass: FormGroup = this.fb.group({
     email: this.emailValidator,
   });
@@ -98,6 +107,7 @@ export class FormService {
   });
 
   formSignUp: FormGroup = this.fb.group({
+    idApt: this.reqValidator,
     email: this.emailValidator,
     password: this.passValidator,
   });

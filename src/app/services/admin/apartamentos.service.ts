@@ -100,6 +100,7 @@ export class ApartamentosService {
             const idFire = this.fireStore.createId();
             this.form.patchValue({
               id: idFire,
+              perfilCompleto: false,
               condominio: this.condominio
             });
             this.saveDataNew(idFire);
