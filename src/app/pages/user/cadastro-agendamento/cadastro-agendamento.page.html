@@ -17,7 +17,7 @@
           <ion-icon slot="start" name="information-circle-outline"></ion-icon>
           <ion-label>Preencha as informações</ion-label>
         </ion-item>
-        <ion-item>
+        <ion-item [disabled]="disabledItemUser">
           <ion-input
             formControlName="nomeResponsavel"
             label="Nome do responsável"
@@ -25,6 +25,18 @@
             maxlength="150"
             labelPlacement="stacked"
             placeholder="Digite o nome do responsável..."
+            autocorrect="on"
+            spellcheck="true"
+          ></ion-input>
+        </ion-item>
+        <ion-item [disabled]="disabledItemUser">
+          <ion-input
+            formControlName="apartamento"
+            label="Apartamento / bloco"
+            minlength="1"
+            maxlength="150"
+            labelPlacement="stacked"
+            placeholder="Digite o apartamento / bloco..."
             autocorrect="on"
             spellcheck="true"
           ></ion-input>
@@ -45,18 +57,7 @@
             <ion-select-option> Natal </ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-item>
-          <ion-input
-            formControlName="apartamento"
-            label="Apartamento / bloco"
-            minlength="1"
-            maxlength="150"
-            labelPlacement="stacked"
-            placeholder="Digite o apartamento / bloco..."
-            autocorrect="on"
-            spellcheck="true"
-          ></ion-input>
-        </ion-item>
+
         <ion-card color="light">
           <ion-card-header>
             <ion-label>Selecione a data do evento</ion-label>
