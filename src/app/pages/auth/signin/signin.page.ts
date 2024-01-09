@@ -1,10 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { IonicModule, NavController } from '@ionic/angular';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { TypeRegister } from 'src/app/enum/type_user';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { FormService } from 'src/app/services/forms/form.service';
 
@@ -26,7 +24,6 @@ export class SigninPage implements OnInit {
   isLoading: boolean = false;
   typePersistence: string = 'session';
   viewPass: boolean = false;
-  typeRegister: string = TypeRegister.MORADOR;
 
   constructor(
     private authService: AuthService,

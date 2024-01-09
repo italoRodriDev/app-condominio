@@ -3,8 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule, NavController } from '@ionic/angular';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { TypeRegister } from 'src/app/enum/type_user';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { AuthAdminService } from 'src/app/services/auth/auth-admin.service';
 import { FormService } from 'src/app/services/forms/form.service';
 
 @Component({
@@ -24,10 +23,9 @@ export class SignupPage implements OnInit {
   formSignUp: FormGroup = this.formService.formSignUp;
   isLoading: boolean = false;
   viewPass: boolean = false;
-  private typeRegister = TypeRegister.CONDOMINIO;
 
   constructor(
-    private authService: AuthService,
+    private authAdminService: AuthAdminService,
     private formService: FormService,
     private navCtrl: NavController
   ) {}
@@ -44,9 +42,9 @@ export class SignupPage implements OnInit {
 
   onClickContinue() {
     this.isLoading = true;
-    //this.authService
-    //  .createAccount()
-    //  .then((loading) => (this.isLoading = loading));
+    this.authAdminService
+      .createAccount()
+      .then((loading) => (this.isLoading = loading));
   }
 
   onClickBack() {

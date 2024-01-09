@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { SharedComponentsModule } from 'src/app/components/shared-components.module';
-import { NAVBAR_DATA_MENU } from 'src/app/components/side-bar/nav-data';
 import { ApartamentoModel } from 'src/app/models/apartamento.model';
 import { ModalController } from '@ionic/angular/standalone';
 import { AlertsService } from 'src/app/services/alerts/alerts.service';
@@ -18,7 +17,6 @@ import { EditApartamentoPage } from './edit-apartamento/edit-apartamento.page';
   imports: [IonicModule, CommonModule, FormsModule, SharedComponentsModule]
 })
 export class ApartamentosPage implements OnInit {
-  sideBarItems = NAVBAR_DATA_MENU;
   columns: Array<any> = [];
   lines: Array<any> = [];
   filters: Array<any> = [];

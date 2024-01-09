@@ -34,7 +34,6 @@ export class AgendamentoAreaGourmetService {
   ) {}
 
   getListItems() {
-    console.log(this.condominio)
     if (this.condominio?.idUser != null) {
       
       this.fireStore

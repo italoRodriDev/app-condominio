@@ -5,7 +5,7 @@ import { IonicModule, NavController } from '@ionic/angular';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { AlertsService } from 'src/app/services/alerts/alerts.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { AuthAdminService } from 'src/app/services/auth/auth-admin.service';
 import { FormService } from 'src/app/services/forms/form.service';
 
 @Component({
@@ -30,7 +30,7 @@ export class FinishSignupPage implements OnInit {
 
   constructor(
     private alertService: AlertsService,
-    private authService: AuthService,
+    private authAdminService: AuthAdminService,
     private formService: FormService,
     private navCtrl: NavController
   ) {}
@@ -47,9 +47,9 @@ export class FinishSignupPage implements OnInit {
 
   onClickContinue() {
     if (this.checkedTerms) {
-    //  this.authService
-    //    .saveDataFinishSignUp()
-    //    .then((loading) => (this.isLoading = loading));
+      this.authAdminService
+        .saveDataFinishSignUp()
+        .then((loading) => (this.isLoading = loading));
     } else {
       this.alertService.showAlert(
         'Aceite nossos termos primeiro!',

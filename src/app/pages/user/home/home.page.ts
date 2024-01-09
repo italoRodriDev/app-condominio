@@ -9,7 +9,6 @@ import { AgendamentoAreaGourmetService } from 'src/app/services/user/agendamento
 import { InfoAgendamentoPage } from '../info-agendamento/info-agendamento.page';
 import * as moment from 'moment';
 import { SharedComponentsModule } from 'src/app/components/shared-components.module';
-import { NAVBAR_DATA_MENU } from 'src/app/components/side-bar/nav-data';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
@@ -20,7 +19,6 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   imports: [IonicModule, CommonModule, FormsModule, SharedComponentsModule],
 })
 export class HomePage implements OnInit {
-  sideBarItems = NAVBAR_DATA_MENU;
   listAgendamentos: Array<AgendamentoModel> = [];
   listDatesCalendar: Array<any> = [];
   constructor(

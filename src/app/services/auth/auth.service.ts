@@ -6,11 +6,11 @@ import { FormGroup } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { TypeRegister } from 'src/app/enum/type_user';
 import { ApartamentosService } from '../admin/apartamentos.service';
 import { AlertsService } from '../alerts/alerts.service';
 import { FormService } from '../forms/form.service';
 import { AgendamentoAreaGourmetService } from '../user/agendamento-area-gourmet.service';
+import { TypeUser } from 'src/app/enum/type_user';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +25,8 @@ export class AuthService {
 
   idUser: string | undefined;
   idCondominio: string | undefined;
-  typeRegister: string = TypeRegister.MORADOR;
+  public bsTypeUser = new BehaviorSubject<any>(null);
+  typeUser = this.bsTypeUser.asObservable();
   public bsAuth = new BehaviorSubject(false);
   isAuth = this.bsAuth.asObservable();
   public bsDataCondominio = new BehaviorSubject<any>(null);
@@ -46,14 +47,14 @@ export class AuthService {
     this.checkIfLogin();
   }
 
-  // -> Recuperando usuario atual
   checkIfLogin() {
+    const idCondominio = localStorage.getItem('condominio');
+    if (idCondominio) {
+      this.idCondominio = idCondominio;
+    }
+
     this.fireAuth.onAuthStateChanged((user) => {
       if (user?.uid != null) {
-        const idCondominio = localStorage.getItem('condominio');
-        if (idCondominio) {
-          this.idCondominio = idCondominio;
-        }
         this.navigationToHome();
       } else {
         this.navCtrl.navigateForward('entrar');
@@ -65,7 +66,6 @@ export class AuthService {
     this.fireAuth.currentUser.then((user) => {
       if (user?.emailVerified) {
         this.getDataUser(user?.uid);
-        this.navCtrl.navigateForward('inicio');
       } else {
         if (user?.email != null) {
           this.checkAndSendVerificationEmail(user?.email?.toString());
@@ -76,21 +76,60 @@ export class AuthService {
 
   getDataUser(idUser: string) {
     this.fireStore
-        .collection('Apartamentos')
-        .doc(this.idCondominio)
-        .collection('dados', (q) => q.where('idUser', '==', idUser))
-        .get()
-        .subscribe((data) => {
-          if (data.docs.length) {
-            const userData: any = data.docs[0].data();
-            if (userData) {
-              this.agendamentoAreaGourmetService.condominio = userData.condominio; 
-              this.apartamentosService.condominio = userData.condominio;
-              this.bsDataApt.next(userData);
-              this.bsDataCondominio.next(userData.condominio);
+      .collection('Apartamentos')
+      .doc(this.idCondominio)
+      .collection('dados', (q) => q.where('idUser', '==', idUser))
+      .get()
+      .subscribe((data) => {
+        if (data.docs.length) {
+          const userData: any = data.docs[0].data();
+          if (userData && userData.typeUser == TypeUser.MORADOR) {
+            if (userData.status == true) {
+              this.sharedDataPages(
+                TypeUser.MORADOR,
+                userData.condominio,
+                userData
+              );
+            } else {
+              this.alertService.showAlert(
+                'Acesso não permitido',
+                'Seu acesso foi bloqueado.'
+              );
+              this.signOutAccount();
             }
           }
-        });
+        }
+      });
+
+    this.fireStore
+      .collection('Condominios')
+      .doc(idUser)
+      .get()
+      .subscribe((res) => {
+        if (res.exists) {
+          const condominioData: any = res.data();
+          if (
+            condominioData &&
+            condominioData.typeUser == TypeUser.CONDOMINIO
+          ) {
+            if (condominioData.perfilCompleto == true) {
+              this.sharedDataPages(TypeUser.CONDOMINIO, condominioData, null);
+            } else {
+              this.navCtrl.navigateForward('finalizar-cadastro');
+            }
+          }
+        }
+      });
+  }
+
+  sharedDataPages(typeUser: TypeUser, dataCondominio: any, dataApt: any) {
+    this.formService.resetDataForm();
+    this.agendamentoAreaGourmetService.condominio = dataCondominio;
+    this.apartamentosService.condominio = dataCondominio;
+    this.bsDataApt.next(dataApt);
+    this.bsDataCondominio.next(dataCondominio);
+    this.bsTypeUser.next(typeUser);
+    this.navCtrl.navigateForward('inicio');
   }
 
   checkAndSendVerificationEmail(textEmail: string) {
@@ -116,7 +155,6 @@ export class AuthService {
     return new Promise<any>((resolve) => {
       const email = this.formAuthSignIn.controls['email'];
       const password = this.formAuthSignIn.controls['password'];
-
       if (email.valid && password.valid) {
         this.fireAuth
           .signInWithEmailAndPassword(email.value, password.value)
@@ -125,8 +163,8 @@ export class AuthService {
             this.navigationToHome();
           })
           .catch((e) => {
-            resolve(false);
             this.validateCompleteRegister();
+            resolve(false);
             this.getError(e);
           });
       }
@@ -150,7 +188,7 @@ export class AuthService {
               .doc(idApt.value)
               .update({
                 idUser: idUser,
-                typeUser: 'APT',
+                typeUser: TypeUser.MORADOR.toString(),
                 dataCadastro: moment().format(),
                 perfilCompleto: true,
               })
@@ -174,6 +212,7 @@ export class AuthService {
 
   validateCompleteRegister() {
     const email = this.formAuthSignIn.controls['email'];
+
     if (email.valid) {
       this.fireStore
         .collection('Apartamentos')
@@ -230,6 +269,10 @@ export class AuthService {
     this.fireAuth
       .signOut()
       .then(() => {
+        this.bsAuth.next(false);
+        this.bsDataApt.next(null);
+        this.bsDataCondominio.next(null);
+        this.bsTypeUser.next(null);
         this.navCtrl.navigateBack('entrar');
       })
       .catch((error) => {
@@ -273,10 +316,9 @@ export class AuthService {
           'Ops! Esse usuário já foi cadastrado, tente recuperar a senha.'
         );
         break;
-      default:
-        this.alertService.showToast(
-          'Ops! Algo saiu errado. Verifique sua conexão.'
-        );
+      case 'auth/invalid-login-credentials':
+        this.alertService.showToast('Ops! Cadastro não finalizado.');
+        break;
     }
   }
 }

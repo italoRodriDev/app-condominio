@@ -107,12 +107,13 @@ export class FormService {
   });
 
   formSignUp: FormGroup = this.fb.group({
-    idApt: this.reqValidator,
+    idApt: [],
     email: this.emailValidator,
     password: this.passValidator,
   });
 
   formSignUpFinish: FormGroup = this.fb.group({
+    perfilCompleto: [],
     name: this.nameValidator,
     phone: this.phoneValidator,
     cnpj: this.reqValidator,
@@ -140,6 +141,7 @@ export class FormService {
   formApartamento: FormGroup = this.fb.group({
     id: [],
     condominio: [],
+    perfilCompleto: [],
     nome: this.nameValidator,
     numeroBloco: this.reqValidator,
     email: this.emailValidator,
