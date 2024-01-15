@@ -57,12 +57,25 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/user/agendamento-concluido/agendamento-concluido.page').then( m => m.AgendamentoConcluidoPage)
   },
   {
+    path: 'votacoes',
+    loadComponent: () => import('./pages/admin/votacoes/votacoes.page').then( m => m.VotacoesPage)
+  },
+  // ADMIN
+  {
     path: 'apartamentos',
     loadComponent: () => import('./pages/admin/apartamentos/apartamentos.page').then( m => m.ApartamentosPage)
   },
   {
     path: 'edit-apartamento',
     loadComponent: () => import('./pages/admin/apartamentos/edit-apartamento/edit-apartamento.page').then( m => m.EditApartamentoPage)
+  },
+  {
+    path: 'pautas-votacao',
+    loadComponent: () => import('./pages/user/pautas-votacao/pautas-votacao.page').then( m => m.PautasVotacaoPage)
+  },
+  {
+    path: 'edit-votacao',
+    loadComponent: () => import('./pages/admin/votacoes/edit-votacao/edit-votacao.page').then( m => m.EditVotacaoPage)
   },
   
 ];

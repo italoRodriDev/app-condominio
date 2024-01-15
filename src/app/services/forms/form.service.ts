@@ -149,6 +149,14 @@ export class FormService {
     status: this.reqValidator,
   });
 
+  formPautaVotacao: FormGroup = this.fb.group({
+    id: [],
+    pauta: this.titleValidator,
+    motivo: this.descValidator,
+    status: this.reqValidator,
+    data: this.reqValidator
+  });
+
   constructor(private fb: FormBuilder) {
     this.resetDataForm();
   }
@@ -161,9 +169,14 @@ export class FormService {
     this.formSignUpFinish.reset();
     this.formAgendamento.reset();
     this.formApartamento.reset();
+    this.formPautaVotacao.reset();
 
     this.formApartamento.patchValue({
       status: true
+    });
+
+    this.formPautaVotacao.patchValue({
+      status: true,
     });
   }
 }

@@ -11,6 +11,7 @@ import { AlertsService } from '../alerts/alerts.service';
 import { FormService } from '../forms/form.service';
 import { AgendamentoAreaGourmetService } from '../user/agendamento-area-gourmet.service';
 import { TypeUser } from 'src/app/enum/type_user';
+import { VotacoesService } from '../admin/votacoes.service';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +43,8 @@ export class AuthService {
     private navCtrl: NavController,
     private alertService: AlertsService,
     private agendamentoAreaGourmetService: AgendamentoAreaGourmetService,
-    private apartamentosService: ApartamentosService
+    private apartamentosService: ApartamentosService,
+    private votacoesService: VotacoesService
   ) {
     this.checkIfLogin();
   }
@@ -126,6 +128,7 @@ export class AuthService {
     this.formService.resetDataForm();
     this.agendamentoAreaGourmetService.condominio = dataCondominio;
     this.apartamentosService.condominio = dataCondominio;
+    this.votacoesService.condominio = dataCondominio;
     this.bsDataApt.next(dataApt);
     this.bsDataCondominio.next(dataCondominio);
     this.bsTypeUser.next(typeUser);

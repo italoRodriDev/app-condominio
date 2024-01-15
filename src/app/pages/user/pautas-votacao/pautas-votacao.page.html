@@ -1,0 +1,37 @@
+<ion-content mode="md">
+  <app-side-bar></app-side-bar>
+  <section class="main-adm">
+    <br />
+    <ion-title>Calendário de Assembléias</ion-title>
+    <ion-card color="light">
+      <ion-card-content>
+        <ion-datetime
+          (ionChange)="onChangeCalendar($event)"
+          locale="pt-BR"
+          [highlightedDates]="listDatesCalendar"
+          presentation="date"
+          mode="ios"
+        >
+      </ion-datetime>
+      </ion-card-content>
+    </ion-card>
+    <br />
+    <br />
+    <ion-title>Próximas pautas</ion-title>
+    <ion-list>
+      <ion-item
+        *ngFor="let item of listPautas"
+        button
+        color="light"
+      >
+        <ion-label
+          >{{ item.data | date: 'dd' }} - {{ item.pauta }}</ion-label
+        >
+      </ion-item>
+      <app-skeleton-list
+        *ngIf="!listPautas.length"
+        image="calendario_anim.svg"
+      ></app-skeleton-list>
+    </ion-list>
+  </section>
+</ion-content>

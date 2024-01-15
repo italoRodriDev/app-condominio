@@ -1,0 +1,81 @@
+<ion-header mode="md">
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button (click)="onDismiss()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-title
+        >{{ (data?.id != null ? data!.pauta : 'Cadastrar nova pauta'
+        ) }}</ion-title
+      >
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content mode="md">
+  <div class="box-form">
+    <ion-list>
+      <form [formGroup]="form">
+        <ion-item lines="none" style="border: none">
+          <ion-icon slot="start" name="list-outline"></ion-icon>
+          <ion-label>Dados da pauta</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Ativa? Não / Sim</ion-label>
+          <ion-toggle
+            mode="ios"
+            color="success"
+            formControlName="status"
+            checked="false"
+            slot="end"
+          ></ion-toggle>
+        </ion-item>
+        <ion-card color="light">
+          <ion-card-header>
+            <ion-label>Selecione a data do evento</ion-label>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-datetime
+              formControlName="data"
+              [min]="mesInicial"
+              locale="pt-BR"
+              presentation="date"
+              mode="ios"
+            ></ion-datetime>
+          </ion-card-content>
+        </ion-card>
+        <ion-item>
+          <ion-input
+            formControlName="pauta"
+            label="Nome da pauta"
+            minlength="1"
+            maxlength="150"
+            labelPlacement="stacked"
+            placeholder="Digite um titulo..."
+            autocorrect="on"
+            spellcheck="true"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-textarea
+            formControlName="motivo"
+            label="Motivo da pauta"
+            minlength="1"
+            maxlength="150"
+            rows="4"
+            labelPlacement="stacked"
+            placeholder="Digite o motivo..."
+            autocorrect="on"
+            spellcheck="true"
+          ></ion-textarea>
+        </ion-item>
+      </form>
+      <ion-button
+        (click)="onClickSave()"
+        shape="round"
+        [disabled]="!form.valid"
+      >
+        <ion-label color="light">Salvar dados</ion-label>
+      </ion-button>
+    </ion-list>
+  </div>
+</ion-content>
