@@ -77,5 +77,17 @@ export const routes: Routes = [
     path: 'edit-votacao',
     loadComponent: () => import('./pages/admin/votacoes/edit-votacao/edit-votacao.page').then( m => m.EditVotacaoPage)
   },
+  {
+    path: 'pagamentos-condominio',
+    loadComponent: () => import('./pages/admin/pagamentos-condominio/pagamentos-condominio.page').then( m => m.PagamentosCondominioPage)
+  },
+  {
+    path: 'fatura-condominio',
+    loadComponent: () => import('./pages/user/fatura-condominio/fatura-condominio.page').then( m => m.FaturaCondominioPage)
+  },
+  {
+    path: 'configuracoes',
+    loadComponent: () => import('./pages/admin/configuracoes/configuracoes.page').then( m => m.ConfiguracoesPage)
+  },
   
 ];

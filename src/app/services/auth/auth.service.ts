@@ -6,12 +6,13 @@ import { FormGroup } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { TypeUser } from 'src/app/enum/type_user';
 import { ApartamentosService } from '../admin/apartamentos.service';
+import { ConfiguracoesService } from '../admin/configuracoes.service';
+import { VotacoesService } from '../admin/votacoes.service';
 import { AlertsService } from '../alerts/alerts.service';
 import { FormService } from '../forms/form.service';
 import { AgendamentoAreaGourmetService } from '../user/agendamento-area-gourmet.service';
-import { TypeUser } from 'src/app/enum/type_user';
-import { VotacoesService } from '../admin/votacoes.service';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +43,7 @@ export class AuthService {
     private fireStore: AngularFirestore,
     private navCtrl: NavController,
     private alertService: AlertsService,
+    private configuracoesService: ConfiguracoesService,
     private agendamentoAreaGourmetService: AgendamentoAreaGourmetService,
     private apartamentosService: ApartamentosService,
     private votacoesService: VotacoesService
@@ -126,6 +128,7 @@ export class AuthService {
 
   sharedDataPages(typeUser: TypeUser, dataCondominio: any, dataApt: any) {
     this.formService.resetDataForm();
+    this.configuracoesService.condominio = dataCondominio;
     this.agendamentoAreaGourmetService.condominio = dataCondominio;
     this.apartamentosService.condominio = dataCondominio;
     this.votacoesService.condominio = dataCondominio;

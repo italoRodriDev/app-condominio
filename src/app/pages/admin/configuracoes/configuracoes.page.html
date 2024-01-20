@@ -1,0 +1,143 @@
+<ion-content [fullscreen]="true" scrollEvents="true">
+  <app-side-bar></app-side-bar>
+  <section>
+    <ion-title>Configurações</ion-title>
+    <br />
+    <div class="box-form">
+      <form [formGroup]="form">
+        <ion-title>Dados do condomínio</ion-title>
+        <ion-item lines="none">
+          <app-select-images
+            (listSelected)="onChangeListFilesImages($event)"
+            [urlImagesUpload]="urlImagesUpload"
+            [modeSelect]="'SIMPLE'"
+            widthImg="200px"
+            heightImg="200px"
+            [labelSelectSimpleImage]="'Logo'"
+          ></app-select-images>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            formControlName="name"
+            label="Nome da empresa"
+            type="text"
+            minlength="3"
+            maxlength="100"
+            labelPlacement="stacked"
+            placeholder="Digite o nome da empresa"
+            autocorrect="on"
+            spellcheck="true"
+          ></ion-input>
+        </ion-item>
+        <ion-item class="input-mask" lines="none">
+          <p>Telefone</p>
+          <input
+            formControlName="phone"
+            label="Telefone/Whatsapp"
+            type="text"
+            mask="(00) 00000-0000"
+            labelPlacement="stacked"
+            placeholder="Digite o telefone..."
+            autocorrect="on"
+            spellcheck="true"
+          />
+        </ion-item>
+        <ion-item class="input-mask" lines="none">
+          <p>CNPJ</p>
+          <input
+            formControlName="cnpj"
+            label="CNPJ"
+            type="text"
+            mask="00.000.000/0000-00"
+            labelPlacement="stacked"
+            placeholder="Digite o CNPJ..."
+            autocorrect="on"
+            spellcheck="true"
+          />
+        </ion-item>
+        <ion-item>
+          <ion-input
+            formControlName="address"
+            label="Endereço da empresa"
+            type="text"
+            minlength="8"
+            maxlength="200"
+            labelPlacement="stacked"
+            placeholder="Ex: R. Maria, 100, Centro, São Paulo"
+            autocorrect="on"
+            spellcheck="true"
+          ></ion-input>
+        </ion-item>
+        <br/>
+        <ion-title>Configurações</ion-title>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-title>Escolha um tema</ion-title>
+              <ion-item lines="none">
+                <ion-list class="list">
+                  <ion-radio-group formControlName="color">
+                    <ion-item
+                      class="card-color"
+                      button
+                      *ngFor="let theme of listThemes"
+                    >
+                      <div
+                        slot="start"
+                        class="box-color"
+                        [style]="'background-color:'+ theme.primary +';'"
+                      ></div>
+                      <ion-label>{{ theme.title }}</ion-label>
+                      <ion-radio
+                        slot="end"
+                        [value]="theme?.primary"
+                      ></ion-radio>
+                    </ion-item>
+                  </ion-radio-group>
+                </ion-list>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-title
+                >Dias disponível para agendamento da área gourmet</ion-title
+              >
+              <ion-item>
+                <app-select-days
+                (onChangeData)="onChangeSelectDays($event)"
+                [currentListDays]="listDaysGourmet"
+              ></app-select-days>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-grid> </ion-grid>
+        <div>
+          <ion-button
+            (click)="printQrCode()"
+            size="small"
+            >
+            <ion-label color="light">Baixar QR-Code</ion-label>
+            </ion-button
+          >
+          <ion-button
+            (click)="onClickCopyLink()"
+            size="small"
+            >
+            <ion-label color="light">Copiar link de acesso</ion-label>
+            </ion-button
+          >
+          <div id="card-qrcode">
+            <canvas #qrcode></canvas>
+          </div>
+        </div>
+        <br />
+        <br />
+        <ion-button (click)="saveData()"
+          >
+          <ion-label color="light">Salvar</ion-label>
+          </ion-button
+        >
+      </form>
+    </div>
+  </section>
+</ion-content>

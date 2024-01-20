@@ -1,0 +1,38 @@
+<ion-content scrollX="true">
+  <app-side-bar></app-side-bar>
+  <section class="main-adm">
+    <ion-title>Pagamentos</ion-title>
+    <br />
+    <ion-row>
+      <ion-col>
+        
+      </ion-col>
+    </ion-row>
+    <ion-item>
+      <ion-icon name="list-outline"></ion-icon>
+      <ion-title>Lista de faturas</ion-title>
+      <ion-button slot="end" (click)="onClickNew()">
+        <ion-icon slot="start" color="light" name="add"></ion-icon>
+        <ion-label color="light">Adicionar</ion-label>
+      </ion-button>
+    </ion-item>
+    <br />
+    <app-table
+      (clickEdit)="onClickEdit($event)"
+      (clickRemove)="onClickRemove($event)"
+      (changeFilterSearch)="onChangeFilterSearch($event)"
+      (changeLoadScroll)="onChangeScroll($event)"
+      *ngIf="lines.length"
+      [columns]="columns"
+      [lines]="lines"
+      [filters]="filters"
+      [showBtnDelete]="true"
+      [showBtnEdit]="true"
+      [showBtnInfo]="false"
+      [showCheckBox]="false"
+      [showPagination]="true"
+      [currentPage]="listItems.length"
+    ></app-table>
+    <app-skeleton-list *ngIf="!listItems.length"></app-skeleton-list>
+  </section>
+</ion-content>

@@ -7,6 +7,10 @@ export interface CondominioModel {
   birthDate: string;
   phone: string;
   gender: string;
-  typeRegister: string;
-  photoProfile: Array<any>;
+  typeUser: string;
+  logo: any;
+  address: string;
+  color: any;
+  daysGourmet: any;
+  perfilCompleto: boolean;
 }
