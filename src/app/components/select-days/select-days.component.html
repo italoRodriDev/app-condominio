@@ -3,66 +3,45 @@
     <ion-icon slot="start" name="time-outline"></ion-icon>
     <ion-label>{{ label }}</ion-label>
   </ion-item>
-  <ion-row *ngFor="let item of listDays">
-    <ion-col size="2"><ion-checkbox
+  <ion-item *ngFor="let item of listDays">
+    <ion-checkbox
+      slot="start"
       color="success"
       (ionChange)="item.open = !item.open"
       [checked]="item.open"
-    ></ion-checkbox></ion-col>
-    <ion-col size="3">
-      <ion-label>{{ item.name.substring(0, 3).toUpperCase() }}</ion-label>
-    </ion-col>
-    <ion-col size="7">
-      <div>
-        <ion-row *ngIf="item.open == true">
-          <ion-col>
-            <div class="box-time" color="transparent" lines="none">
-              <ion-row>
-                <ion-col>
-                  <ion-label *ngIf="!item?.openHour">Abre</ion-label>
-                  <ion-label *ngIf="item?.openHour">{{
-                    item?.openHour | date : "HH:mm"
-                  }}</ion-label>
-                </ion-col>
-                <ion-col>
-                  <ion-button (click)="showModalDateTime(item, 'OPEN_HOUR'); $event.stopPropagation()" slot="end">
-                    <ion-icon icon="calendar"></ion-icon>
-                  </ion-button>
-                </ion-col>
-              </ion-row>
-            
-             
-            </div>
-          </ion-col>
-          <ion-col>
-            <div class="box-time" color="transparent" lines="none">
-              <ion-row>
-                <ion-col>
-                  <ion-label *ngIf="!item?.closeHour">Fecha</ion-label>
-                  <ion-label *ngIf="item?.closeHour">{{
-                    item?.closeHour | date : "HH:mm"
-                  }}</ion-label>
-                </ion-col>
-                <ion-col>
-                  <ion-button
-                  (click)="showModalDateTime(item, 'CLOSE_HOUR'); $event.stopPropagation()"
-                  slot="end"
-                >
-                  <ion-icon icon="calendar"></ion-icon>
-                </ion-button>
-                </ion-col>
-              </ion-row>
-              
-             
-            </div>
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="item.open == false">
-          <ion-col>
-            <ion-label>Indisponível</ion-label>
-          </ion-col>
-        </ion-row>
-      </div>
-    </ion-col>
-  </ion-row>
+    ></ion-checkbox>
+    <ion-label>{{ item.name.substring(0, 3).toUpperCase() }}</ion-label>
+    <ion-row *ngIf="item.open == true">
+      <ion-col>
+        <ion-item class="box-time" color="transparent" lines="none">
+          <ion-label *ngIf="!item?.openHour">Abre</ion-label>
+          <ion-label *ngIf="item?.openHour">{{
+            item?.openHour | date : "HH:mm"
+          }}</ion-label>
+          <ion-button (click)="showModalDateTime(item, 'OPEN_HOUR'); $event.stopPropagation()" slot="end">
+            <ion-icon icon="calendar"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item class="box-time" color="transparent" lines="none">
+          <ion-label *ngIf="!item?.closeHour">Fecha</ion-label>
+          <ion-label *ngIf="item?.closeHour">{{
+            item?.closeHour | date : "HH:mm"
+          }}</ion-label>
+          <ion-button
+            (click)="showModalDateTime(item, 'CLOSE_HOUR'); $event.stopPropagation()"
+            slot="end"
+          >
+            <ion-icon icon="calendar"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="item.open == false">
+      <ion-col>
+        <ion-label>Indisponível</ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-item>
 </div>
